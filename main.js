@@ -8,26 +8,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ─────────────────────────────────────────
-     1. INSTANT CURSOR
-  ───────────────────────────────────────── */
-  const soulCursor = document.getElementById('soul-cursor');
-  if (soulCursor) {
-    let mouseX = 0;
-    let mouseY = 0;
-    let tick = false;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (!tick) {
-        requestAnimationFrame(() => {
-          soulCursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-          tick = false;
-        });
-        tick = true;
-      }
-    }, { passive: true });
-  }
+
 
 
 
@@ -59,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       antialias: true,
       powerPreference: 'high-performance',
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.25));
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0); // fully transparent
     renderer.shadowMap.enabled = true;
@@ -142,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── RENDER LOOP ───────────────────────────
     function animate() {
       requestAnimationFrame(animate);
+      if (currentPage !== 'home') return; // Pause rendering when not on homepage to free up GPU resources
       pivotGroup.rotation.y += spinSpeed;
       renderer.render(scene, camera);
     }
@@ -158,12 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ro.observe(wrap);
   }
 
-  // Kick off all three islands
-  // Each uses a different GLB and a slightly different spin speed
-  // for personality variation
-  setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
-  setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
-  setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
+  // Defer loading 3D models slightly to let the critical layout/styles/fonts load first on slow connections
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
+      setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
+      setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
+    }, 500);
+  });
 
   /* ─────────────────────────────────────────
      4. FLY-IN PAGE TRANSITIONS

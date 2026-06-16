@@ -33,10 +33,10 @@
         },
         {
           id: 'deskly',
-          tag: 'Storefront · React',
+          tag: 'E-Commerce · Full-Stack PHP',
           name: 'Deskly Wellness Store',
-          desc: 'User-friendly e-commerce storefront focused on desk wellness and productivity products. Designed with dynamic state management, custom cart flows, high-fidelity responsive layouts, and performance-tuned load times.',
-          stack: ['React.js', 'Vite', 'TailwindCSS', 'Node.js', 'State UX'],
+          desc: 'A full-stack e-commerce platform built for workspace wellness and ergonomics. Features custom cart management, role-based admin controls, dynamic product catalogs, and notification hubs built without complex frameworks to optimize performance.',
+          stack: ['PHP 8', 'Vanilla JavaScript', 'MySQL', 'Vanilla CSS Design System', 'Glassmorphism UI'],
           type: 'live',
           url: 'https://github.com/Thabithx/deskly',
           accentColor: '#10b981',
@@ -57,7 +57,7 @@
           id: 'spotterapp',
           tag: 'Geo-Discovery · PWA',
           name: 'Spotter App',
-          desc: 'Hyper-local discovery platform allowing users to find hidden gems and unique spots. Built with a responsive mobile-first PWA architecture, Mapbox GL geographic styling, custom spatial query algorithms, and MongoDB storage layers for offline search support.',
+          desc: 'Hyper-local discovery platform allowing users to find hidden gems and unique local spots. Built with a responsive mobile-first PWA architecture, Mapbox GL geographic styling, custom spatial query algorithms, and MongoDB storage layers for offline search support.',
           stack: ['Node.js', 'Express', 'Mapbox API', 'MongoDB', 'PWA', 'TailwindCSS'],
           type: 'image',
           images: [
@@ -80,10 +80,10 @@
       projects: [
         {
           id: 'lumio',
-          tag: 'LLM SaaS · Next.js',
-          name: 'Lumio Interview Prep',
-          desc: 'An AI-powered interview simulator built to transform prep. Uses streaming Large Language Models (LLM) to dynamically evaluate user answers, generate context-aware follow-up questions, and provide visual scoring rubrics over domain competencies.',
-          stack: ['Next.js', 'Gemini API', 'TypeScript', 'TailwindCSS', 'Node.js', 'PostgreSQL'],
+          tag: 'Gamified Prep · LLM',
+          name: 'Lumio Prep Simulator',
+          desc: 'Gamified interview simulator designed to transform technical coding and behavioral interview preparation. Built with step-by-step technical scoring roadmaps, Monaco Editor sandboxing, custom resume matchers, and OpenAI streaming response hooks.',
+          stack: ['React (Vite)', 'Framer Motion', 'TailwindCSS', 'Monaco Editor', 'Node.js', 'Express', 'MongoDB', 'OpenAI API'],
           type: 'live',
           url: 'https://lumio-sable.vercel.app',
           accentColor: '#a855f7',
@@ -102,10 +102,10 @@
       projects: [
         {
           id: 'medicare',
-          tag: 'Enterprise Java · Spring',
-          name: 'Medicare Systems',
-          desc: 'High-performance medical ecosystem built to transform hospital operations. Manages patient registries, real-time doctor schedules, billing channels, and medical reporting with Spring Security and optimistic data locking.',
-          stack: ['Java Spring Boot', 'PostgreSQL', 'Spring Security', 'JWT', 'Hibernate', 'Docker'],
+          tag: 'Desktop Java · MySQL',
+          name: 'Medicare Operations',
+          desc: 'High-performance desktop-based medical operations platform. Designed with custom Swing components, deep Java AWT 2D graphics rendering, time analytics reporting, and MySQL storage supporting secure doctor and patient ledger management.',
+          stack: ['Java 17', 'Java AWT & Swing', 'MySQL', 'MVC Architecture', 'Role-Based Access Control'],
           type: 'image',
           images: [
             'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
@@ -116,10 +116,10 @@
         },
         {
           id: 'eCitizen',
-          tag: 'Spring Boot · Security',
-          name: 'eCitizen Portal',
-          desc: 'Secure identity platform transforming paper application backlogs into instant web flows. Allows citizens to securely apply from home and receive digital National IDs within days. Built with HMAC-SHA256, biometric authentication modules, and data audit logs.',
-          stack: ['Kotlin', 'Spring Boot', 'AES-256', 'HMAC-SHA256', 'PostgreSQL', 'Biometrics'],
+          tag: 'Digital NID · Security',
+          name: 'eCitizen Platform',
+          desc: 'A revolutionary digital identity ecosystem streamlining government applications. Features automated National ID PDF generation with embedded QR codes, JWT role security, document management via Cloudinary, and benefit cards.',
+          stack: ['Node.js', 'Express.js', 'MongoDB', 'Cloudinary', 'PDFKit', 'Bootstrap 5', 'JWT'],
           type: 'image',
           images: [
             'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',

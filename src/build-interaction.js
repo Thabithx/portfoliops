@@ -125,20 +125,82 @@ if(savedDelay !== null) {
   globalQueueDelayWeeks = parseInt(savedDelay);
 }
 
+// Pricing definitions for individual capabilities
+const capabilityPrices = {
+  'logins': 20,
+  'admin': 25,
+  'notifications': 15,
+  'storage': 15,
+  'payments': 25,
+  'portfolio': 20,
+  'invoices': 15,
+  'chat': 20
+};
+
+// Check if features should be automatically checked and disabled (locked) based on active architecture
+function updateSmartDependencies() {
+  const activeCard = document.querySelector('.arch-card.active');
+  const type = activeCard ? activeCard.getAttribute('data-type') : null;
+
+  document.querySelectorAll('.tag-pill').forEach(pill => {
+    const id = pill.getAttribute('data-id');
+    
+    // Default: not locked
+    pill.classList.remove('locked-active');
+    
+    if (type === 'ecommerce') {
+      if (id === 'payments' || id === 'portfolio' || id === 'invoices') {
+        pill.setAttribute('data-active', 'true');
+        pill.classList.add('locked-active');
+      }
+    } else if (type === 'webapp') {
+      if (id === 'logins' || id === 'admin') {
+        pill.setAttribute('data-active', 'true');
+        pill.classList.add('locked-active');
+      }
+    }
+  });
+}
+
+function calculateTotalPrice() {
+  const activeCard = document.querySelector('.arch-card.active');
+  if (!activeCard) return 0;
+
+  const basePrice = parseInt(activeCard.getAttribute('data-price'));
+  const type = activeCard.getAttribute('data-type');
+  
+  let additionalPrice = 0;
+  
+  document.querySelectorAll('.tag-pill[data-active="true"]').forEach(pill => {
+    const id = pill.getAttribute('data-id');
+    
+    // Bundle inclusions (free if matching package is selected)
+    if (type === 'ecommerce' && (id === 'payments' || id === 'portfolio' || id === 'invoices')) {
+      // Free/Included in E-commerce package!
+      return;
+    }
+    if (type === 'webapp' && (id === 'logins' || id === 'admin')) {
+      // Free/Included in Web App package!
+      return;
+    }
+    
+    // Add realistic feature cost
+    additionalPrice += (capabilityPrices[id] || 0);
+  });
+  
+  return basePrice + additionalPrice;
+}
+
 archCards.forEach(card => {
   card.addEventListener('click', () => {
     archCards.forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     
-    // Calculate Feature Tags Price
-    let additionalPrice = 0;
-    document.querySelectorAll('.tag-pill[data-active="true"]').forEach(() => {
-      additionalPrice += 25;
-    });
+    // Set auto-selections first
+    updateSmartDependencies();
 
-    // Update Pricing
-    const basePrice = parseInt(card.getAttribute('data-price'));
-    currentPrice = basePrice + additionalPrice;
+    // Recalculate price
+    currentPrice = calculateTotalPrice();
     animateOdometer(quotePrice, currentPrice, '$');
 
     // Update Timeline
@@ -165,10 +227,17 @@ function animateOdometer(element, targetValue, prefix = '', suffix = '') {
   });
 }
 
-// 3. Smart Feature Tags (Isolated State)
+// 3. Smart Feature Tags
 const tagPills = document.querySelectorAll('.tag-pill');
 tagPills.forEach(pill => {
   pill.addEventListener('click', () => {
+    // If it's locked/auto-selected by current package, user cannot manually disable it
+    if (pill.classList.contains('locked-active')) {
+      // Play brief wiggle animation to denote it is locked
+      gsap.fromTo(pill, { x: -4 }, { x: 4, duration: 0.1, yoyo: true, repeat: 3, onComplete: () => gsap.set(pill, { x: 0 }) });
+      return;
+    }
+    
     const isActive = pill.getAttribute('data-active') === 'true';
     pill.setAttribute('data-active', !isActive);
     
@@ -176,19 +245,8 @@ tagPills.forEach(pill => {
     gsap.fromTo(pill, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: 'back.out(2)' });
     
     // Recalculate price
-    let additionalPrice = 0;
-    document.querySelectorAll('.tag-pill[data-active="true"]').forEach(() => {
-      additionalPrice += 25; // Each feature adds $25
-    });
-    
-    const activeCard = document.querySelector('.arch-card.active');
-    let basePrice = 0;
-    if (activeCard) {
-      basePrice = parseInt(activeCard.getAttribute('data-price'));
-    }
-    
-    const totalPrice = basePrice + additionalPrice;
-    if (totalPrice !== currentPrice && basePrice > 0) {
+    const totalPrice = calculateTotalPrice();
+    if (totalPrice !== currentPrice) {
       currentPrice = totalPrice;
       animateOdometer(quotePrice, totalPrice, '$');
     }

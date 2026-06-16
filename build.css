@@ -153,6 +153,20 @@ body.build-body {
   background: rgba(255, 255, 255, 0.15); border-color: #fff; color: #fff;
   box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
+.tag-pill.locked-active {
+  background: rgba(100, 255, 218, 0.15);
+  border-color: rgba(100, 255, 218, 0.8);
+  color: #64ffda;
+  cursor: not-allowed;
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.15);
+}
+.tag-pill.locked-active::after {
+  content: " ✓ Included";
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
 
 .concept-input {
   width: 100%; height: 120px; background: rgba(10, 10, 10, 0.6);

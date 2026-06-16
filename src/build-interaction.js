@@ -127,14 +127,14 @@ if(savedDelay !== null) {
 
 // Pricing definitions for individual capabilities
 const capabilityPrices = {
-  'logins': 20,
-  'admin': 25,
-  'notifications': 15,
-  'storage': 15,
-  'payments': 25,
-  'portfolio': 20,
-  'invoices': 15,
-  'chat': 20
+  'logins': 10,
+  'admin': 15,
+  'notifications': 5,
+  'storage': 8,
+  'payments': 15,
+  'portfolio': 10,
+  'invoices': 5,
+  'chat': 10
 };
 
 // Check if features should be automatically checked and disabled (locked) based on active architecture
@@ -145,16 +145,15 @@ function updateSmartDependencies() {
   document.querySelectorAll('.tag-pill').forEach(pill => {
     const id = pill.getAttribute('data-id');
     
-    // Default: not locked
-    pill.classList.remove('locked-active');
+    // Reset defaults: remove locked class and set data-active based on user choice
+    // But if we switch architectures, we should reset previously locked tags to false
+    if (pill.classList.contains('locked-active')) {
+      pill.setAttribute('data-active', 'false');
+      pill.classList.remove('locked-active');
+    }
     
     if (type === 'ecommerce') {
-      if (id === 'payments' || id === 'portfolio' || id === 'invoices') {
-        pill.setAttribute('data-active', 'true');
-        pill.classList.add('locked-active');
-      }
-    } else if (type === 'webapp') {
-      if (id === 'logins' || id === 'admin') {
+      if (id === 'payments' || id === 'portfolio' || id === 'invoices' || id === 'admin' || id === 'storage') {
         pill.setAttribute('data-active', 'true');
         pill.classList.add('locked-active');
       }
@@ -175,12 +174,8 @@ function calculateTotalPrice() {
     const id = pill.getAttribute('data-id');
     
     // Bundle inclusions (free if matching package is selected)
-    if (type === 'ecommerce' && (id === 'payments' || id === 'portfolio' || id === 'invoices')) {
+    if (type === 'ecommerce' && (id === 'payments' || id === 'portfolio' || id === 'invoices' || id === 'admin' || id === 'storage')) {
       // Free/Included in E-commerce package!
-      return;
-    }
-    if (type === 'webapp' && (id === 'logins' || id === 'admin')) {
-      // Free/Included in Web App package!
       return;
     }
     

@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Main sun from above-right (warm white)
     const sun = new THREE.DirectionalLight(0xfffef0, 3.5);
     sun.position.set(4, 8, 6);
-    sun.castShadow = true;
+    sun.castShadow = false;
     scene.add(sun);
 
     // Heavenly fill from left (cool sky blue)
@@ -107,11 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const centre = box2.getCenter(new THREE.Vector3());
         model.position.sub(centre);
 
-        // Enable shadows + ensure good material response
+        // Disable shadows
         model.traverse((child) => {
           if (child.isMesh) {
-            child.castShadow    = true;
-            child.receiveShadow = true;
+            child.castShadow    = false;
+            child.receiveShadow = false;
             if (child.material) {
               child.material.envMapIntensity = 0.6;
             }

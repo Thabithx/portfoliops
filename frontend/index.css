@@ -1202,7 +1202,9 @@ html, body {
   margin-left: -170px;
   transform-style: preserve-3d;
   cursor: pointer;
-  will-change: transform;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .orbit-card-wrap:focus-visible { outline: 2px solid rgba(186,230,253,0.6); border-radius: 24px; }
 

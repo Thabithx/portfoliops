@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 393;
-    const adjustedTargetSize = targetSize; // Keep original size, only reduce gap
+    const adjustedTargetSize = isSmallDevice ? targetSize * 0.95 : targetSize; // 5% smaller for small devices
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;

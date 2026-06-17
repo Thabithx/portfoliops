@@ -7,5 +7,5 @@ export function getApiBase() {
     return 'http://localhost:3001/api';
   }
   // Replace with your deployed backend URL
-  return 'https://your-backend-url.onrender.com/api';
+  return 'https://thabith.onrender.com/api';
 }

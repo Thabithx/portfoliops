@@ -2,6 +2,9 @@
 import { CURRENCIES, formatPriceUSD, getCurrencySymbol } from './currencies.js';
 import { getApiBase } from './api-config.js';
 
+// Store uploaded image URLs
+const uploadedImages = [];
+
 // 1. The Velvet Void & Particle Constellation Engine
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
@@ -325,6 +328,44 @@ proposalSidebar.addEventListener('click', () => {
 // 5. Universal Asset Dropper
 const assetDropper = document.getElementById('asset-dropper');
 const polaroidContainer = document.getElementById('polaroid-container');
+const assetInputMobile = document.getElementById('asset-input-mobile');
+
+// Handle mobile image upload
+assetInputMobile.addEventListener('change', async (e) => {
+  if (e.target.files && e.target.files.length > 0) {
+    const file = e.target.files[0];
+    if (file.type.startsWith('image/')) {
+      // Upload to Cloudinary
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const res = await fetch(`${getApiBase()}/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const data = await res.json();
+        if (data.success) {
+          uploadedImages.push(data.url);
+          createPolaroid(data.url);
+        }
+      } catch (err) {
+        console.error('Upload error:', err);
+        // Fallback to local preview
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          createPolaroid(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+});
 
 assetDropper.addEventListener('dragover', (e) => {
   e.preventDefault();
@@ -333,18 +374,41 @@ assetDropper.addEventListener('dragover', (e) => {
 assetDropper.addEventListener('dragleave', () => {
   assetDropper.classList.remove('dragover');
 });
-assetDropper.addEventListener('drop', (e) => {
+assetDropper.addEventListener('drop', async (e) => {
   e.preventDefault();
   assetDropper.classList.remove('dragover');
-  
+
   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
     const file = e.dataTransfer.files[0];
     if (file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        createPolaroid(event.target.result);
-      };
-      reader.readAsDataURL(file);
+      // Upload to Cloudinary
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const res = await fetch(`${getApiBase()}/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const data = await res.json();
+        if (data.success) {
+          uploadedImages.push(data.url);
+          createPolaroid(data.url);
+        }
+      } catch (err) {
+        console.error('Upload error:', err);
+        // Fallback to local preview
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          createPolaroid(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 });
@@ -435,6 +499,7 @@ document.getElementById('btn-transmit').addEventListener('click', async () => {
     phone: whatsappInput.value.trim(),
     features: getActiveFeatureLabels(),
     assets: polaroidCount,
+    imageUrls: uploadedImages,
     invoiceUSD,
     currency: activeCurrency,
     invoiceDisplay,

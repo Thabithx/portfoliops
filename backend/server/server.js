@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import ordersRouter from './routes/orders.js';
 import authRouter from './routes/auth.js';
+import uploadRouter from './routes/upload.js';
 import { connectStore, getStorageMode } from './store.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -19,12 +20,26 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/portfolio_
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
+app.get('/', (_req, res) => {
+  res.json({ 
+    message: 'Portfolio Backend API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      orders: '/api/orders',
+      upload: '/api/upload'
+    }
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, storage: getStorageMode() });
 });
 
 app.use('/api/auth', authRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/upload', uploadRouter);
 
 async function start() {
   await connectStore(MONGO_URI);

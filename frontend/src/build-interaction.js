@@ -526,6 +526,7 @@ document.getElementById('btn-transmit').addEventListener('click', async () => {
       invoice: invoiceDisplay,
       status: 'Lead',
       statusCode: 'lead',
+      imageUrls: [], // Don't store base64 images in localStorage to avoid quota exceeded
     });
     localStorage.setItem('draft_orders', JSON.stringify(orders));
   }

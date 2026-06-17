@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
 
+    // Adjust target size for small devices like iPhone 17
+    const isSmallDevice = window.innerWidth <= 393;
+    const adjustedTargetSize = isSmallDevice ? targetSize * 0.7 : targetSize;
+
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;
     const W = wrap.clientWidth  || 210;
@@ -41,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       powerPreference: 'high-performance',
     });
     const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.25));
+    renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 2.5) : Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0); // fully transparent
     renderer.shadowMap.enabled = true;
@@ -92,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
       (gltf) => {
         const model = gltf.scene;
 
-        // Auto-scale to a target world size of targetSize units
+        // Auto-scale to a target world size of adjustedTargetSize units
         const box   = new THREE.Box3().setFromObject(model);
         const size  = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        const scale  = targetSize / maxDim;
+        const scale  = adjustedTargetSize / maxDim;
         model.scale.setScalar(scale);
 
         // Re-centre model inside pivotGroup

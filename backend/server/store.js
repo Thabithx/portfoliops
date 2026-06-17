@@ -84,8 +84,13 @@ export async function deleteOrder(orderId) {
     return result.deletedCount > 0;
   }
   const orders = await readJsonOrders();
-  const filtered = orders.filter(o => o.orderId !== orderId);
-  if (filtered.length === orders.length) return false;
-  await writeJsonOrders(filtered);
+  const filtered = orders.filter(o => o.orderId === orderId);
+  if (filtered.length === 0) {
+    console.log('[store] Order not found for deletion:', orderId);
+    console.log('[store] Available order IDs:', orders.map(o => o.orderId));
+    return false;
+  }
+  const newOrders = orders.filter(o => o.orderId !== orderId);
+  await writeJsonOrders(newOrders);
   return true;
 }

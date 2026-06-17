@@ -6,6 +6,6 @@ export function getApiBase() {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:3001/api';
   }
-  // Replace with your deployed backend URL
+  // Use deployed backend URL for production
   return 'https://thabith.onrender.com/api';
 }

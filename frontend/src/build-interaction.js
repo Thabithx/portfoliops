@@ -248,8 +248,8 @@ archCards.forEach(card => {
     if(type === 'webapp') baselineWeeks = 3;
     if(type === 'bespoke') baselineWeeks = 4;
     
-    const totalWeeks = baselineWeeks + globalQueueDelayWeeks;
-    animateOdometer(quoteTimeline, totalWeeks, '', ' WEEKS');
+    // Show only the specific order time, not including queue delay
+    animateOdometer(quoteTimeline, baselineWeeks, '', ' WEEKS');
   });
 });
 

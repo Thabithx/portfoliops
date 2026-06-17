@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="portfolio-api" content="http://localhost:3001" />
   <title>Spatial Drafting Portal</title>
+  <link rel="icon" href="src/profile-transparent.png" type="image/png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="build.css">
+  <link rel="stylesheet" href="build.css?v=7">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body class="build-body">
@@ -165,10 +167,13 @@
       <div class="proposal-content">
         <div class="odometer-block">
           <span class="odometer-label">Fixed Intellectual Investment</span>
-          <span class="odometer-price" id="quote-price">$0</span>
+          <div class="price-row">
+            <span class="odometer-price" id="quote-price">$0</span>
+            <select id="build-currency-select" class="build-currency-select" aria-label="Select currency"></select>
+          </div>
         </div>
         
-        <div class="odometer-block" style="margin-top: 24px;">
+        <div class="odometer-block odometer-block--timeline">
           <span class="odometer-label">Production Velocity</span>
           <span class="odometer-timeline" id="quote-timeline">--</span>
         </div>
@@ -185,8 +190,8 @@
         </div>
 
         <div class="sidebar-input-group">
-          <input type="email" id="order-email" class="sidebar-input" placeholder="Email Address" required>
-          <input type="text" id="order-whatsapp" class="sidebar-input" placeholder="WhatsApp Number" required>
+          <input type="email" id="order-email" class="sidebar-input" placeholder="Email Address (optional)">
+          <input type="tel" id="order-whatsapp" class="sidebar-input" placeholder="Phone / WhatsApp *" required aria-required="true">
         </div>
 
         <button class="btn-transmit" id="btn-transmit">ORDER</button>
@@ -195,13 +200,21 @@
 
   </div>
 
+  <div id="build-toast" class="build-toast" role="status" aria-live="polite" hidden>
+    <span class="build-toast-icon" aria-hidden="true">✓</span>
+    <span class="build-toast-message">Our team will contact you soon.</span>
+  </div>
+
   <!-- Script Modules -->
-  <script type="module" src="src/build-interaction.js"></script>
+  <script type="module" src="src/build-interaction.js?v=7"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then((reg) => console.log('[Service Worker] Registered successfully', reg.scope))
+        navigator.serviceWorker.register('./sw.js?v=8')
+          .then((reg) => {
+            reg.update();
+            console.log('[Service Worker] Registered successfully', reg.scope);
+          })
           .catch((err) => console.warn('[Service Worker] Registration failed', err));
       });
     }

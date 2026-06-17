@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="portfolio-api" content="http://localhost:3001">
+  <title>Admin System - Spatial Drafting Portal</title>
+  <link rel="icon" href="src/profile-transparent.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #050505;
+      color: #fff;
+      padding: 40px;
+    }
+    body.admin-login-active {
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .currency-select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .currency-select:hover, .currency-select:focus {
+      border-color: rgba(255,255,255,0.4);
+    }
+    .currency-select option {
+      background: #111;
+      color: #fff;
+    }
+    
+    .override-panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 24px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .override-panel h2 { font-size: 1rem; color: rgba(255,255,255,0.6); }
+    .queue-input {
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 900;
+      width: 100px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .btn-save {
+      background: #fff; color: #000;
+      border: none; padding: 12px 24px; font-weight: 600; cursor: pointer; border-radius: 4px;
+    }
+    .btn-save:hover { background: #e0e0e0; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    th {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    td { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+    
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .status-lead { background: rgba(255, 165, 0, 0.2); color: orange; }
+    .status-prod { background: rgba(0, 191, 255, 0.2); color: #00bfff; }
+    .status-shipped { background: rgba(0, 255, 0, 0.2); color: #4ade80; }
+    
+    .thumbnail {
+      width: 40px; height: 40px; border-radius: 4px; object-fit: cover;
+    }
+
+    .order-row {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .order-row:hover,
+    .order-row:focus {
+      background: rgba(255,255,255,0.04);
+      outline: none;
+    }
+
+    .order-detail-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .order-detail-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .order-detail-panel {
+      position: relative;
+      width: min(720px, 100%);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .order-detail-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      margin: -8px -8px 8px 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+    .order-detail-close:hover { background: rgba(255,255,255,0.14); }
+    .order-detail-panel h2 {
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,0.7);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+      clear: both;
+    }
+    .detail-span-2 { grid-column: 1 / -1; }
+    .detail-label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+    .detail-grid p {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .detail-grid a { color: #7dd3fc; }
+    .detail-muted { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+    .detail-invoice { font-size: 1.2rem; font-weight: 900; }
+    .detail-feature-list {
+      margin: 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,0.8);
+    }
+    .detail-feature-list li { margin-bottom: 4px; }
+
+    .btn-refresh {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .btn-refresh:hover { border-color: rgba(255,255,255,0.45); }
+
+    .admin-login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .admin-login-card {
+      width: min(380px, 100%);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 32px 28px;
+    }
+    .admin-login-card h1 {
+      font-size: 1.1rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .admin-login-card p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .admin-login-input {
+      width: 100%;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    .admin-login-input:focus { border-color: rgba(255,255,255,0.5); }
+    .admin-login-btn {
+      width: 100%;
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .admin-login-btn:hover { background: #e4e4e7; }
+    .admin-login-error {
+      min-height: 1.2rem;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #f87171;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .btn-logout:hover { border-color: rgba(255,255,255,0.45); }
+    .currency-select {
+      width: 52px;
+      min-width: 52px;
+      padding: 8px 6px;
+      text-align: center;
+      text-align-last: center;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Responsive Table Styles */
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        margin-bottom: 16px;
+        padding: 12px;
+        background: rgba(255,255,255,0.02);
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        position: relative;
+        padding-left: 120px;
+        margin-bottom: 8px;
+      }
+      td:last-child {
+        border-bottom: 0;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        top: 16px;
+        width: 100px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+      }
+      td[data-label="Invoice"] {
+        font-size: 1.2rem;
+      }
+      .override-panel {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-span-2 { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="admin-login-screen" class="admin-login-screen">
+    <form id="admin-login-form" class="admin-login-card">
+      <h1>Admin Access</h1>
+      <p>Sign in to view orders and manage the pipeline dashboard.</p>
+      <input type="password" id="admin-password" class="admin-login-input" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="admin-login-btn">Sign In</button>
+      <p id="admin-login-error" class="admin-login-error" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="admin-app" hidden>
+
+  <header>
+    <h1>Back-Office Pipeline Dashboard</h1>
+    <div class="header-actions">
+      <button type="button" id="btn-refresh-orders" class="btn-refresh">Refresh Orders</button>
+      <select id="currency-select" class="currency-select" aria-label="Select currency">
+        <!-- Injected via JS -->
+      </select>
+      <button type="button" id="btn-admin-logout" class="btn-logout">Sign Out</button>
+      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">System Status: Secure</div>
+    </div>
+  </header>
+
+  <div class="override-panel">
+    <div>
+      <h2>Global Queue Delay Buffer (Weeks)</h2>
+      <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 4px;">Adjusts public baseline timeline calculations.</p>
+    </div>
+    <input type="number" id="queue-buffer" class="queue-input" value="2" min="0" max="10">
+    <button class="btn-save" id="btn-save-buffer">OVERRIDE TIMELINE</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Client ID</th>
+        <th>Architecture Format</th>
+        <th>Concept Stream</th>
+        <th>Reference Asssets</th>
+        <th>Invoice</th>
+        <th>Workflow Status</th>
+      </tr>
+    </thead>
+    <tbody id="orders-tbody">
+      <!-- Mock Data injected via JS -->
+    </tbody>
+  </table>
+
+  <div class="order-detail-overlay" id="order-detail-overlay" aria-hidden="true">
+    <div class="order-detail-panel" role="dialog" aria-modal="true" aria-labelledby="order-detail-title">
+      <button type="button" class="order-detail-close" id="order-detail-close" aria-label="Close order details">&times;</button>
+      <h2 id="order-detail-title">Order Details</h2>
+      <div id="order-detail-body"></div>
+    </div>
+  </div>
+
+  </div><!-- /#admin-app -->
+
+  <script type="module" src="src/admin.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js?v=8')
+          .then((reg) => {
+            reg.update();
+            console.log('[Service Worker] Registered successfully', reg.scope);
+          })
+          .catch((err) => console.warn('[Service Worker] Registration failed', err));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0.05);stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bgGrad)" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="70" fill="rgba(15,23,42,0.8)" />
+  <rect x="20" y="20" width="120" height="30" rx="4" fill="#10b981" />
+  <text x="80" y="40" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">DESKLY</text>
+  
+  <!-- Navigation -->
+  <rect x="160" y="25" width="80" height="20" rx="3" fill="rgba(255,255,255,0.1)" />
+  <text x="200" y="38" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Products</text>
+  <rect x="250" y="25" width="80" height="20" rx="3" fill="rgba(255,255,255,0.1)" />
+  <text x="290" y="38" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Cart</text>
+  <rect x="340" y="25" width="80" height="20" rx="3" fill="rgba(255,255,255,0.1)" />
+  <text x="380" y="38" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Admin</text>
+  
+  <!-- Hero Section -->
+  <rect x="20" y="90" width="760" height="180" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.1)" />
+  <text x="50" y="130" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white">Workspace Wellness</text>
+  <text x="50" y="160" font-family="Arial, sans-serif" font-size="14" fill="rgba(255,255,255,0.7)">Premium ergonomic solutions for modern offices</text>
+  <rect x="50" y="180" width="140" height="35" rx="6" fill="#10b981" />
+  <text x="120" y="203" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">Shop Now</text>
+  
+  <!-- Product Cards -->
+  <rect x="20" y="290" width="240" height="280" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.1)" />
+  <rect x="40" y="310" width="200" height="140" rx="8" fill="rgba(56,189,248,0.15)" />
+  <rect x="60" y="340" width="160" height="80" rx="4" fill="rgba(255,255,255,0.1)" />
+  <text x="40" y="475" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Ergonomic Chair</text>
+  <text x="40" y="495" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Premium lumbar support</text>
+  <text x="40" y="535" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#10b981">$299</text>
+  
+  <rect x="280" y="290" width="240" height="280" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.1)" />
+  <rect x="300" y="310" width="200" height="140" rx="8" fill="rgba(56,189,248,0.15)" />
+  <rect x="320" y="340" width="160" height="80" rx="4" fill="rgba(255,255,255,0.1)" />
+  <text x="300" y="475" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Standing Desk</text>
+  <text x="300" y="495" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Height-adjustable</text>
+  <text x="300" y="535" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#10b981">$449</text>
+  
+  <rect x="540" y="290" width="240" height="280" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.1)" />
+  <rect x="560" y="310" width="200" height="140" rx="8" fill="rgba(56,189,248,0.15)" />
+  <rect x="580" y="340" width="160" height="80" rx="4" fill="rgba(255,255,255,0.1)" />
+  <text x="560" y="475" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Monitor Arm</text>
+  <text x="560" y="495" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Dual display mount</text>
+  <text x="560" y="535" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#10b981">$89</text>
+  
+  <!-- Cart Badge -->
+  <circle cx="750" cy="35" r="18" fill="#ef4444" filter="url(#glow)" />
+  <text x="750" y="40" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">3</text>
+</svg>

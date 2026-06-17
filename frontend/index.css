@@ -2480,12 +2480,6 @@ html, body {
     border-right: none;
     padding-right: 0;
   }
-  .center-card-container::before {
-    height: 100px;
-  }
-  .id-badge-wrapper {
-    margin-top: 100px;
-  }
 }
 @media (max-width: 768px) {
   .editorial-columns {

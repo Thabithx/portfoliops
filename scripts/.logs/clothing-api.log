@@ -1,0 +1,19 @@
+node:internal/modules/cjs/loader:1925
+  return process.dlopen(module, path.toNamespacedPath(filename));
+                 ^
+
+Error: dlopen(/Users/thabith/Desktop/portfolio/projects/e-commerce stores/clothing store/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node, 0x0001): tried: '/Users/thabith/Desktop/portfolio/projects/e-commerce stores/clothing store/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/thabith/Desktop/portfolio/projects/e-commerce stores/clothing store/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node' (no such file), '/Users/thabith/Desktop/portfolio/projects/e-commerce stores/clothing store/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node' (slice is not valid mach-o file)
+    at Object..node (node:internal/modules/cjs/loader:1925:18)
+    at Module.load (node:internal/modules/cjs/loader:1469:32)
+    at Function._load (node:internal/modules/cjs/loader:1286:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.<anonymous> (/Users/thabith/Desktop/portfolio/projects/e-commerce stores/clothing store/backend/node_modules/bcrypt/bcrypt.js:6:16)
+    at Module._compile (node:internal/modules/cjs/loader:1734:14)
+    at Object..js (node:internal/modules/cjs/loader:1899:10) {
+  code: 'ERR_DLOPEN_FAILED'
+}
+
+Node.js v23.9.0

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Human-First Engineering | The Heavenly Sanctuary</title>
+  <link rel="icon" href="src/profile-transparent.png" type="image/png">
   <meta name="description" content="A peaceful, immersive portfolio for a full-stack developer. Inspired by Tanjiro's spiritual core — infinite sky, floating islands.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -147,8 +148,11 @@
 
     <!-- Project Detail Overlay -->
     <div class="proj-detail-overlay" id="proj-detail" aria-hidden="true">
+      <button class="proj-detail-close" id="proj-detail-close" aria-label="Close detail">
+        <span class="proj-detail-close-label">Close</span>
+        <span class="proj-detail-close-icon" aria-hidden="true">&#10005;</span>
+      </button>
       <div class="proj-detail-inner">
-        <button class="proj-detail-close" id="proj-detail-close" aria-label="Close detail">&#10005;</button>
         <div class="proj-detail-media" id="proj-detail-media"></div>
         <div class="proj-detail-body">
           <div class="proj-detail-tag" id="proj-detail-tag"></div>
@@ -430,7 +434,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/Draggable.min.js"></script>
   <script src="src/about-gsap.js"></script>
-  <script src="src/orbit-carousel.js"></script>
+  <script src="src/orbit-carousel.js?v=8"></script>
   <script src="main.js" type="module"></script>
 </body>
 </html>

@@ -1,0 +1,67 @@
+[Tue Jun 16 23:48:19 2026] PHP 8.5.0 Development Server (http://0.0.0.0:3020) started
+[Tue Jun 16 23:48:31 2026] 127.0.0.1:55968 Accepted
+[Tue Jun 16 23:48:31 2026] 127.0.0.1:55968 [200]: GET /pages/index.html
+[Tue Jun 16 23:48:31 2026] 127.0.0.1:55968 Closing
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58250 Accepted
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58251 Accepted
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58250 [200]: GET /css/design-system.css
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58251 [200]: GET /css/components.css
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58250 Closing
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58251 Closing
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58253 Accepted
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58253 [404]: GET /.well-known/appspecific/com.chrome.devtools.json - No such file or directory
+[Tue Jun 16 23:54:20 2026] 127.0.0.1:58253 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65083 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65083 [200]: GET /pages/index.html
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65083 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65089 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65089 [200]: GET /pages/index.html
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65089 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65101 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65102 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65101 [200]: GET /css/design-system.css
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65102 [200]: GET /css/components.css
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65104 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65101 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65106 Accepted
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65102 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65104 [200]: GET /css/design-system.css
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65106 [200]: GET /css/components.css
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65104 Closing
+[Wed Jun 17 00:11:07 2026] 127.0.0.1:65106 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65203 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65203 [200]: GET /js/api.js
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65203 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65211 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65211 [200]: GET /js/api.js
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65211 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65284 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65284 [200]: GET /js/utils.js
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65284 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65286 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65286 [200]: GET /js/utils.js
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65286 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65289 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65290 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65289 [200]: GET /components/header.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65290 [404]: GET /api/spots/trending?limit=6 - No such file or directory
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65290 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65289 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65292 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65292 [200]: GET /components/header.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65294 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65292 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65294 [404]: GET /api/spots/trending?limit=6 - No such file or directory
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65294 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65296 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65296 [200]: GET /components/hero.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65296 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65298 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65298 [200]: GET /components/hero.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65298 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65300 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65300 [200]: GET /components/footer.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65300 Closing
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65302 Accepted
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65302 [200]: GET /components/footer.html
+[Wed Jun 17 00:11:08 2026] 127.0.0.1:65302 Closing

@@ -1,0 +1,8 @@
+server running at http://localhost:5003
+Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.ftuln.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:293:17) {
+  errno: undefined,
+  code: 'ENOTFOUND',
+  syscall: 'querySrv',
+  hostname: '_mongodb._tcp.cluster0.ftuln.mongodb.net'
+}

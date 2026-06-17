@@ -1,0 +1,9 @@
+
+  VITE v6.0.6  ready in 154 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+Browserslist: browsers data (caniuse-lite) is 18 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+12:16:26 AM [vite] (client) hmr update /src/context/ShopContext.jsx, /src/index.css

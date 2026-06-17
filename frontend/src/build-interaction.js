@@ -1,4 +1,6 @@
 // SPATIAL DRAFTING PORTAL - Re-Engineered Logic
+import { CURRENCIES, formatPriceUSD, getCurrencySymbol } from './currencies.js';
+import { getApiBase } from './api-config.js';
 
 // 1. The Velvet Void & Particle Constellation Engine
 const canvas = document.getElementById('particle-canvas');
@@ -137,6 +139,62 @@ const capabilityPrices = {
   'chat': 10
 };
 
+const FEATURE_LABELS = {
+  logins: 'Secure Member Logins',
+  admin: 'Admin Dashboard',
+  notifications: 'Push Notifications',
+  storage: 'Cloud File Storage',
+  payments: 'Takes Payments',
+  portfolio: 'Product Portfolio',
+  invoices: 'Invoice Generation',
+  chat: 'Live Chat Portal',
+};
+
+/** Auto-included (locked) for E-Commerce — prices still apply */
+const ECOMMERCE_AUTO_INCLUDED = ['logins', 'admin', 'storage', 'payments', 'portfolio'];
+
+let activeCurrency = localStorage.getItem('build_currency') || localStorage.getItem('admin_currency') || 'USD';
+
+function formatDisplayPrice(usd) {
+  return formatPriceUSD(usd, activeCurrency);
+}
+
+function getActiveFeatureIds() {
+  return [...document.querySelectorAll('.tag-pill[data-active="true"]')]
+    .map(pill => pill.getAttribute('data-id'))
+    .filter(Boolean);
+}
+
+function getActiveFeatureLabels() {
+  return getActiveFeatureIds().map(id => FEATURE_LABELS[id] || id);
+}
+
+function refreshPriceDisplay() {
+  currentPrice = calculateTotalPrice();
+  animateOdometer(quotePrice, currentPrice, getCurrencySymbol(activeCurrency));
+}
+
+function setupCurrencySelect() {
+  const currencySelect = document.getElementById('build-currency-select');
+  if (!currencySelect) return;
+
+  currencySelect.innerHTML = '';
+  Object.entries(CURRENCIES).forEach(([code, cfg]) => {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = cfg.icon || cfg.symbol;
+    opt.title = cfg.label;
+    if (code === activeCurrency) opt.selected = true;
+    currencySelect.appendChild(opt);
+  });
+
+  currencySelect.addEventListener('change', () => {
+    activeCurrency = currencySelect.value;
+    localStorage.setItem('build_currency', activeCurrency);
+    refreshPriceDisplay();
+  });
+}
+
 // Check if features should be automatically checked and disabled (locked) based on active architecture
 function updateSmartDependencies() {
   const activeCard = document.querySelector('.arch-card.active');
@@ -144,19 +202,15 @@ function updateSmartDependencies() {
 
   document.querySelectorAll('.tag-pill').forEach(pill => {
     const id = pill.getAttribute('data-id');
-    
-    // Reset defaults: remove locked class and set data-active based on user choice
-    // But if we switch architectures, we should reset previously locked tags to false
+
     if (pill.classList.contains('locked-active')) {
       pill.setAttribute('data-active', 'false');
       pill.classList.remove('locked-active');
     }
-    
-    if (type === 'ecommerce') {
-      if (id === 'payments' || id === 'portfolio' || id === 'invoices' || id === 'admin' || id === 'storage') {
-        pill.setAttribute('data-active', 'true');
-        pill.classList.add('locked-active');
-      }
+
+    if (type === 'ecommerce' && ECOMMERCE_AUTO_INCLUDED.includes(id)) {
+      pill.setAttribute('data-active', 'true');
+      pill.classList.add('locked-active');
     }
   });
 }
@@ -165,24 +219,14 @@ function calculateTotalPrice() {
   const activeCard = document.querySelector('.arch-card.active');
   if (!activeCard) return 0;
 
-  const basePrice = parseInt(activeCard.getAttribute('data-price'));
-  const type = activeCard.getAttribute('data-type');
-  
+  const basePrice = parseInt(activeCard.getAttribute('data-price'), 10);
   let additionalPrice = 0;
-  
+
   document.querySelectorAll('.tag-pill[data-active="true"]').forEach(pill => {
     const id = pill.getAttribute('data-id');
-    
-    // Bundle inclusions (free if matching package is selected)
-    if (type === 'ecommerce' && (id === 'payments' || id === 'portfolio' || id === 'invoices' || id === 'admin' || id === 'storage')) {
-      // Free/Included in E-commerce package!
-      return;
-    }
-    
-    // Add realistic feature cost
     additionalPrice += (capabilityPrices[id] || 0);
   });
-  
+
   return basePrice + additionalPrice;
 }
 
@@ -191,12 +235,8 @@ archCards.forEach(card => {
     archCards.forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     
-    // Set auto-selections first
     updateSmartDependencies();
-
-    // Recalculate price
-    currentPrice = calculateTotalPrice();
-    animateOdometer(quotePrice, currentPrice, '$');
+    refreshPriceDisplay();
 
     // Update Timeline
     const type = card.getAttribute('data-type');
@@ -242,13 +282,18 @@ tagPills.forEach(pill => {
     // Recalculate price
     const totalPrice = calculateTotalPrice();
     if (totalPrice !== currentPrice) {
-      currentPrice = totalPrice;
-      animateOdometer(quotePrice, totalPrice, '$');
+      refreshPriceDisplay();
     }
   });
 });
 // 4. Submersible Proposal Sidebar
 btnCompile.addEventListener('click', () => {
+  const activeCard = document.querySelector('.arch-card.active');
+  if (!activeCard) {
+    showBuildToast('Please select an architecture first.', 'Architecture required');
+    return;
+  }
+  refreshPriceDisplay();
   proposalSidebar.classList.add('active');
   proposalSidebar.classList.remove('minimized');
   document.body.classList.add('sidebar-open');
@@ -273,7 +318,7 @@ proposalSidebar.addEventListener('click', () => {
   if(proposalSidebar.classList.contains('minimized')) {
     proposalSidebar.classList.remove('minimized');
     document.body.classList.add('sidebar-open');
-    btnMinimize.innerText = '<';
+    btnMinimize.innerText = '>';
   }
 });
 
@@ -322,67 +367,111 @@ function createPolaroid(src) {
   gsap.from(polaroid, { scale: 2, opacity: 0, rotation: angle + 45, duration: 0.6, ease: 'back.out(1.5)' });
 }
 
+function showBuildToast(message, title = 'Notice') {
+  const toast = document.getElementById('build-toast');
+  if (!toast) return;
+
+  const messageEl = toast.querySelector('.build-toast-message');
+  const iconEl = toast.querySelector('.build-toast-icon');
+
+  const isSuccess = message.toLowerCase().includes('contact you soon');
+  toast.classList.toggle('build-toast--success', isSuccess);
+  toast.classList.toggle('build-toast--error', !isSuccess);
+
+  if (messageEl) messageEl.textContent = isSuccess ? message : (title !== 'Notice' ? `${title}: ${message}` : message);
+  if (iconEl) iconEl.textContent = isSuccess ? '✓' : '!';
+
+  toast.hidden = false;
+  requestAnimationFrame(() => toast.classList.add('show'));
+
+  clearTimeout(showBuildToast._timer);
+  showBuildToast._timer = setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => { toast.hidden = true; }, 450);
+  }, isSuccess ? 3200 : 2800);
+}
+
 // 6. Transmit Blueprint (Order Submission)
-document.getElementById('btn-transmit').addEventListener('click', () => {
+document.getElementById('btn-transmit').addEventListener('click', async () => {
   const btn = document.getElementById('btn-transmit');
   const activeCard = document.querySelector('.arch-card.active');
   const emailInput = document.getElementById('order-email');
   const whatsappInput = document.getElementById('order-whatsapp');
-  
+
   if (!activeCard) {
-    alert("Please select an architecture first.");
+    showBuildToast('Please select an architecture first.');
     return;
   }
-  if (!emailInput.value || !whatsappInput.value) {
-    alert("Please fill in your Email and WhatsApp number.");
+  if (!whatsappInput.value.trim()) {
+    showBuildToast('Please enter your WhatsApp number.', 'Phone required');
     return;
   }
 
-  btn.innerText = "[ TRANSMITTING... ]";
-  btn.style.background = "rgba(255,255,255,0.2)";
-  btn.style.color = "#fff";
-  
-  setTimeout(() => {
-    btn.innerText = "[ BLUEPRINT QUEUED ]";
-    btn.style.background = "#4ade80";
-    btn.style.color = "#000";
-    
-    // Save to local storage database
-    const activeLabel = activeCard.querySelector('.arch-label').innerText;
-    const priceText = document.getElementById('quote-price').innerText;
-    const conceptText = document.getElementById('concept-input').value;
-    const competitorLink = document.querySelector('.link-input').value;
-    const polaroidCount = document.querySelectorAll('.polaroid').length;
-    
+  if (emailInput.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+    showBuildToast('Please enter a valid email address or leave it blank.', 'Invalid email');
+    return;
+  }
+
+  if (btn.disabled) return;
+
+  btn.disabled = true;
+
+  const activeLabel = activeCard.querySelector('.arch-label').innerText;
+  const invoiceUSD = calculateTotalPrice();
+  const invoiceDisplay = formatDisplayPrice(invoiceUSD);
+  const conceptText = document.getElementById('concept-input').value;
+  const competitorLink = document.querySelector('.link-input').value;
+  const polaroidCount = document.querySelectorAll('.polaroid').length;
+  const timelineText = document.getElementById('quote-timeline').innerText;
+  const timelineWeeks = parseInt(timelineText.replace(/\D/g, ''), 10) || 0;
+  const orderId = 'CL-' + Math.floor(1000 + Math.random() * 9000);
+
+  const orderPayload = {
+    orderId,
+    format: activeLabel,
+    concept: conceptText || 'N/A',
+    referenceLink: competitorLink || 'N/A',
+    email: emailInput.value.trim() || 'N/A',
+    phone: whatsappInput.value.trim(),
+    features: getActiveFeatureLabels(),
+    assets: polaroidCount,
+    invoiceUSD,
+    currency: activeCurrency,
+    invoiceDisplay,
+    timelineWeeks,
+  };
+
+  try {
+    const res = await fetch(`${getApiBase()}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Server rejected order');
+    }
+  } catch (err) {
+    console.warn('[build] API save failed, using local fallback:', err.message);
     const orders = JSON.parse(localStorage.getItem('draft_orders') || '[]');
-    const newOrder = {
-      id: 'CL-' + Math.floor(1000 + Math.random() * 9000),
-      format: activeLabel,
-      concept: conceptText || "N/A",
-      link: competitorLink || "N/A",
-      email: emailInput.value,
-      whatsapp: whatsappInput.value,
-      assets: polaroidCount,
-      invoice: priceText,
+    orders.push({
+      ...orderPayload,
+      whatsapp: orderPayload.phone,
+      link: orderPayload.referenceLink,
+      invoice: invoiceDisplay,
       status: 'Lead',
-      statusCode: 'lead'
-    };
-    orders.push(newOrder);
+      statusCode: 'lead',
+    });
     localStorage.setItem('draft_orders', JSON.stringify(orders));
-    
-    setTimeout(() => {
-      btn.innerText = "[ ORDER ]";
-      btn.style.background = "#fff";
-      proposalSidebar.classList.remove('active');
-      document.body.classList.remove('sidebar-open');
-      btnMinimize.style.display = 'none'; // Hide minimized toggle again
-      document.getElementById('concept-input').value = '';
-      document.querySelector('.link-input').value = '';
-      emailInput.value = '';
-      whatsappInput.value = '';
-      polaroidContainer.innerHTML = '';
-      tagPills.forEach(p => p.setAttribute('data-active', 'false'));
-      archCards.forEach(c => c.classList.remove('active'));
-    }, 3000);
-  }, 1500);
+  }
+
+  btn.classList.add('success');
+  showBuildToast('Our team will contact you soon.');
+
+  setTimeout(() => {
+    btn.classList.remove('success');
+    btn.disabled = false;
+  }, 2800);
 });
+
+setupCurrencySelect();

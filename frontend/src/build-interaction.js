@@ -361,6 +361,14 @@ assetDropper.addEventListener('drop', async (e) => {
 
 // Function to upload images in parallel
 async function uploadImagesInParallel(files) {
+  // Show loading indicator
+  const loadingIndicator = document.createElement('div');
+  loadingIndicator.className = 'upload-loading';
+  loadingIndicator.innerHTML = '<span>Uploading images...</span>';
+  loadingIndicator.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:white;padding:16px 24px;border-radius:8px;font-weight:600;z-index:100;';
+  assetDropper.style.position = 'relative';
+  assetDropper.appendChild(loadingIndicator);
+
   const uploadPromises = files.map(async (file) => {
     try {
       // Compress image before upload
@@ -395,6 +403,9 @@ async function uploadImagesInParallel(files) {
   });
 
   await Promise.all(uploadPromises);
+  
+  // Remove loading indicator
+  loadingIndicator.remove();
 }
 
 // Function to compress image before upload

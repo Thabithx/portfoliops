@@ -678,6 +678,7 @@
         img.alt = proj.name;
         img.className = 'media-gallery-img';
         img.loading = 'eager';
+        img.fetchpriority = 'high';
         img.style.width = '100%';
         img.style.height = 'auto';
         img.style.objectFit = 'contain';

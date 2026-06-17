@@ -69,6 +69,15 @@ html, body {
     linear-gradient(to bottom, rgba(0,15,50,0.20) 0%, transparent 45%, rgba(0,15,50,0.35) 100%);
 }
 
+/* Dark glowing overlay filter for enhanced quality */
+.dark-glow-overlay {
+  position: fixed; inset: 0; z-index: 1;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(0.5px) saturate(1.1);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
 
 
 /* ──────────────────────────────────────
@@ -2602,7 +2611,7 @@ html, body {
 .elegant-input {
   width: 100%; padding: 0.85rem 1.2rem; border-radius: 13px;
   background: rgba(255,255,255,0.06); border: 1.5px solid var(--glass-border-lt);
-  color: var(--t1); font-family: var(--font-sans); font-size: 0.88rem;
+  color: var(--t1); font-family: var(--font-sans); font-size: 16px;
   outline: none; transition: border-color .3s, background .3s, box-shadow .3s;
   backdrop-filter: blur(12px);
 }
@@ -2800,4 +2809,23 @@ html, body {
   .island--center .island-3d-wrap { width: 240px; height: 220px; }
   .giant-bg-name { font-size: 2.8rem; }
   .orbit-card-wrap { width: 280px; height: 400px; margin-top: -200px; margin-left: -140px; }
+}
+
+/* Extra small devices (iPhone 17, iPhone 16, etc.) */
+@media (max-width: 393px) {
+  .hero-scene { padding-top: 3vh; }
+  .hero-quote-bare .quote-line { font-size: 2.2rem; }
+  .islands-stage { transform: translateY(3vh); gap: 1.5rem; }
+  .island-3d-wrap { width: 160px; height: 140px; }
+  .island--center .island-3d-wrap { width: 200px; height: 180px; }
+  .island-title { font-size: 0.75rem; }
+  .island-desc { font-size: 0.65rem; }
+  .nav-link { font-size: 0.7rem; }
+  .nav-item { padding: 0.5rem 0.8rem; }
+  .section-title { font-size: 1.8rem; }
+  .section-subtitle { font-size: 0.8rem; }
+  .about-layout-grid { gap: 2rem; }
+  .about-text-block p { font-size: 0.85rem; }
+  .skill-tag { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
+  .orbit-card-wrap { width: 260px; height: 380px; margin-top: -190px; margin-left: -130px; }
 }

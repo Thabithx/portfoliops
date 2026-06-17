@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!canvas) return;
 
     // Adjust target size for small devices like iPhone 17
-    const isSmallDevice = window.innerWidth <= 393;
-    const adjustedTargetSize = isSmallDevice ? targetSize * 0.92 : targetSize; // 8% smaller for small devices
+    const isSmallDevice = window.innerWidth <= 430; // Include more devices
+    const adjustedTargetSize = isSmallDevice ? targetSize * 0.85 : targetSize; // 15% smaller for small devices
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;

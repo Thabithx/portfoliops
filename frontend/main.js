@@ -30,8 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 393;
-    const isExtraSmallDevice = window.innerWidth <= 375; // iPhone SE and similar
-    const adjustedTargetSize = isExtraSmallDevice ? targetSize * 0.4 : (isSmallDevice ? targetSize * 0.5 : targetSize);
+    const adjustedTargetSize = isSmallDevice ? targetSize * 0.5 : targetSize;
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;
@@ -147,12 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Defer loading 3D models slightly to let the critical layout/styles/fonts load first on slow connections
+  // Also defer on mobile to prioritize initial render
+  const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+  const loadDelay = isMobile ? 1500 : 500;
+  
   window.addEventListener('load', () => {
     setTimeout(() => {
       setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
       setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
       setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
-    }, 500);
+    }, loadDelay);
   });
 
   /* ─────────────────────────────────────────

@@ -2823,7 +2823,7 @@ html, body {
 @media (max-width: 393px) {
   .hero-scene { padding-top: 3vh; }
   .hero-quote-bare .quote-line { font-size: 2.2rem; }
-  .islands-stage { transform: translateY(3vh); gap: 0.25rem; }
+  .islands-stage { transform: translateY(3vh); gap: 0.15rem; }
   .island-3d-wrap { width: 160px; height: 140px; }
   .island--center .island-3d-wrap { width: 200px; height: 180px; }
   .island-title { font-size: 0.75rem; }

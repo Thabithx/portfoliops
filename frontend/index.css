@@ -69,6 +69,13 @@ html, body {
     linear-gradient(to bottom, rgba(0,15,50,0.20) 0%, transparent 45%, rgba(0,15,50,0.35) 100%);
 }
 
+/* Bioluminescent cave background */
+.bioluminescent-cave {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(to bottom, #0a0a1a 0%, #0d1a2d 50%, #0a0a1a 100%);
+  overflow: hidden;
+}
+
 /* Dark glowing overlay filter for enhanced quality */
 .dark-glow-overlay {
   position: fixed; inset: 0; z-index: 1;
@@ -2816,7 +2823,7 @@ html, body {
 @media (max-width: 393px) {
   .hero-scene { padding-top: 3vh; }
   .hero-quote-bare .quote-line { font-size: 2.2rem; }
-  .islands-stage { transform: translateY(3vh); gap: 0.5rem; }
+  .islands-stage { transform: translateY(3vh); gap: 0.25rem; }
   .island-3d-wrap { width: 160px; height: 140px; }
   .island--center .island-3d-wrap { width: 200px; height: 180px; }
   .island-title { font-size: 0.75rem; }

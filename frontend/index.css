@@ -72,7 +72,7 @@ html, body {
 /* Bioluminescent cave background */
 .bioluminescent-cave {
   position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(to bottom, #0a0a1a 0%, #0d1a2d 50%, #0a0a1a 100%);
+  background: linear-gradient(to bottom, #020408 0%, #030810 50%, #020408 100%);
   overflow: hidden;
 }
 

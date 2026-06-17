@@ -48,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 2.5) : Math.min(window.devicePixelRatio, 2));
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0); // fully transparent
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = false;
     renderer.outputColorSpace   = THREE.SRGBColorSpace;
     renderer.toneMapping        = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.8;

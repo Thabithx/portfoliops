@@ -23,7 +23,7 @@ function init() {
 
   // Scene
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x050a14, 0.015);
+  scene.fog = new THREE.FogExp2(0x020408, 0.02);
 
   // Camera
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -33,7 +33,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x050a14, 1);
+  renderer.setClearColor(0x020408, 1);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
@@ -68,6 +68,13 @@ function init() {
 
   // Create hanging vines
   createVines();
+
+  // Create stalactites and stalagmites
+  createStalactites();
+  createStalagmites();
+
+  // Create organic cave walls
+  createCaveWalls();
 
   // Event listeners
   window.addEventListener('resize', onWindowResize);
@@ -223,6 +230,90 @@ function createVines() {
     const vine = new THREE.Line(vineGeometry, vineMaterial);
     scene.add(vine);
   }
+}
+
+function createStalactites() {
+  const stalactiteMaterial = new THREE.MeshBasicMaterial({
+    color: 0x0a1525,
+    transparent: true,
+    opacity: 0.5
+  });
+
+  for (let i = 0; i < 40; i++) {
+    const height = 5 + Math.random() * 10;
+    const geometry = new THREE.ConeGeometry(1 + Math.random() * 2, height, 8);
+    const stalactite = new THREE.Mesh(geometry, stalactiteMaterial);
+    stalactite.position.set(
+      (Math.random() - 0.5) * 120,
+      25 + height / 2,
+      (Math.random() - 0.5) * 60 - 30
+    );
+    stalactite.rotation.x = Math.PI;
+    stalactite.rotation.z = Math.random() * 0.3;
+    scene.add(stalactite);
+  }
+}
+
+function createStalagmites() {
+  const stalagmiteMaterial = new THREE.MeshBasicMaterial({
+    color: 0x0a1525,
+    transparent: true,
+    opacity: 0.5
+  });
+
+  for (let i = 0; i < 40; i++) {
+    const height = 5 + Math.random() * 10;
+    const geometry = new THREE.ConeGeometry(1 + Math.random() * 2, height, 8);
+    const stalagmite = new THREE.Mesh(geometry, stalagmiteMaterial);
+    stalagmite.position.set(
+      (Math.random() - 0.5) * 120,
+      -20 - height / 2,
+      (Math.random() - 0.5) * 60 - 30
+    );
+    stalagmite.rotation.z = Math.random() * 0.3;
+    scene.add(stalagmite);
+  }
+}
+
+function createCaveWalls() {
+  const wallMaterial = new THREE.MeshBasicMaterial({
+    color: 0x030810,
+    transparent: true,
+    opacity: 0.3,
+    side: THREE.DoubleSide
+  });
+
+  // Left wall
+  const leftWallGeometry = new THREE.PlaneGeometry(100, 60);
+  const leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
+  leftWall.position.set(-60, 0, 0);
+  leftWall.rotation.y = Math.PI / 2;
+  scene.add(leftWall);
+
+  // Right wall
+  const rightWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
+  rightWall.position.set(60, 0, 0);
+  rightWall.rotation.y = -Math.PI / 2;
+  scene.add(rightWall);
+
+  // Back wall
+  const backWallGeometry = new THREE.PlaneGeometry(120, 60);
+  const backWall = new THREE.Mesh(backWallGeometry, wallMaterial);
+  backWall.position.set(0, 0, -40);
+  scene.add(backWall);
+
+  // Ceiling
+  const ceilingGeometry = new THREE.PlaneGeometry(120, 80);
+  const ceiling = new THREE.Mesh(ceilingGeometry, wallMaterial);
+  ceiling.position.set(0, 30, 0);
+  ceiling.rotation.x = Math.PI / 2;
+  scene.add(ceiling);
+
+  // Floor
+  const floor = new THREE.Mesh(ceilingGeometry, wallMaterial);
+  floor.position.set(0, -30, 0);
+  floor.rotation.x = -Math.PI / 2;
+  scene.add(floor);
 }
 
 function onWindowResize() {

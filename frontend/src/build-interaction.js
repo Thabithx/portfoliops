@@ -365,9 +365,17 @@ async function uploadImagesInParallel(files) {
   const loadingIndicator = document.createElement('div');
   loadingIndicator.className = 'upload-loading';
   loadingIndicator.innerHTML = '<span>Uploading images...</span>';
-  loadingIndicator.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:white;padding:16px 24px;border-radius:8px;font-weight:600;z-index:100;';
+  loadingIndicator.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:transparent;color:white;padding:16px 24px;border-radius:8px;font-weight:600;z-index:100;';
   assetDropper.style.position = 'relative';
   assetDropper.appendChild(loadingIndicator);
+
+  // Disable calculate button during upload
+  const btnCompile = document.getElementById('btn-compile');
+  if (btnCompile) {
+    btnCompile.disabled = true;
+    btnCompile.style.opacity = '0.5';
+    btnCompile.style.cursor = 'not-allowed';
+  }
 
   const uploadPromises = files.map(async (file) => {
     try {
@@ -406,6 +414,13 @@ async function uploadImagesInParallel(files) {
   
   // Remove loading indicator
   loadingIndicator.remove();
+
+  // Re-enable calculate button after upload
+  if (btnCompile) {
+    btnCompile.disabled = false;
+    btnCompile.style.opacity = '1';
+    btnCompile.style.cursor = 'pointer';
+  }
 }
 
 // Function to compress image before upload
@@ -456,6 +471,20 @@ function createPolaroid(src) {
   const img = document.createElement('img');
   img.src = src;
   polaroid.appendChild(img);
+
+  // Add delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerHTML = '×';
+  deleteBtn.style.cssText = 'position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:#ef4444;color:white;border:none;border-radius:50%;cursor:pointer;font-size:16px;font-weight:bold;line-height:1;z-index:10;';
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const index = uploadedImages.indexOf(src);
+    if (index > -1) {
+      uploadedImages.splice(index, 1);
+    }
+    gsap.to(polaroid, { scale: 0, opacity: 0, duration: 0.3, onComplete: () => polaroid.remove() });
+  });
+  polaroid.appendChild(deleteBtn);
   
   const angle = (Math.random() - 0.5) * 40; 
   const x = (Math.random() - 0.5) * 100;

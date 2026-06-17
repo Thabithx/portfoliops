@@ -333,36 +333,9 @@ const assetInputMobile = document.getElementById('asset-input-mobile');
 // Handle mobile image upload
 assetInputMobile.addEventListener('change', async (e) => {
   if (e.target.files && e.target.files.length > 0) {
-    const file = e.target.files[0];
-    if (file.type.startsWith('image/')) {
-      // Upload to Cloudinary
-      try {
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const res = await fetch(`${getApiBase()}/upload`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!res.ok) {
-          throw new Error('Failed to upload image');
-        }
-
-        const data = await res.json();
-        if (data.success) {
-          uploadedImages.push(data.url);
-          createPolaroid(data.url);
-        }
-      } catch (err) {
-        console.error('Upload error:', err);
-        // Fallback to local preview
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          createPolaroid(event.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
+    const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+    if (files.length > 0) {
+      await uploadImagesInParallel(files);
     }
   }
 });
@@ -379,39 +352,91 @@ assetDropper.addEventListener('drop', async (e) => {
   assetDropper.classList.remove('dragover');
 
   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-    const file = e.dataTransfer.files[0];
-    if (file.type.startsWith('image/')) {
-      // Upload to Cloudinary
-      try {
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const res = await fetch(`${getApiBase()}/upload`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!res.ok) {
-          throw new Error('Failed to upload image');
-        }
-
-        const data = await res.json();
-        if (data.success) {
-          uploadedImages.push(data.url);
-          createPolaroid(data.url);
-        }
-      } catch (err) {
-        console.error('Upload error:', err);
-        // Fallback to local preview
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          createPolaroid(event.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length > 0) {
+      await uploadImagesInParallel(files);
     }
   }
 });
+
+// Function to upload images in parallel
+async function uploadImagesInParallel(files) {
+  const uploadPromises = files.map(async (file) => {
+    try {
+      // Compress image before upload
+      const compressedFile = await compressImage(file);
+      
+      const formData = new FormData();
+      formData.append('image', compressedFile);
+
+      const res = await fetch(`${getApiBase()}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      const data = await res.json();
+      if (data.success) {
+        uploadedImages.push(data.url);
+        createPolaroid(data.url);
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      // Fallback to local preview
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        createPolaroid(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  await Promise.all(uploadPromises);
+}
+
+// Function to compress image before upload
+async function compressImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate new dimensions (max 1920x1080)
+        let width = img.width;
+        let height = img.height;
+        const maxWidth = 1920;
+        const maxHeight = 1080;
+        
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Compress to JPEG with 0.8 quality
+        canvas.toBlob((blob) => {
+          resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+        }, 'image/jpeg', 0.8);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 function createPolaroid(src) {
   const polaroid = document.createElement('div');

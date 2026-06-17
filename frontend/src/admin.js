@@ -142,9 +142,9 @@ function openOrderDetail(order) {
     ? `<div class="detail-images">
         <span class="detail-label">Uploaded Images</span>
         <div class="detail-image-grid">
-          ${order.imageUrls.map(url => `
+          ${order.imageUrls.map((url, index) => `
             <div class="detail-image-item">
-              <img src="${url}" alt="Reference image" onclick="window.open('${url}', '_blank')" style="cursor:pointer;max-width:100%;max-height:200px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);">
+              <img src="${url}" alt="Reference image" data-url="${url}" class="admin-detail-img" style="cursor:pointer;max-width:100%;max-height:200px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);">
             </div>
           `).join('')}
         </div>
@@ -196,6 +196,19 @@ function openOrderDetail(order) {
       console.error('Delete error:', err);
       alert('Failed to delete order. Please try again.');
     }
+  });
+
+  // Add image click handlers to open in modal
+  document.querySelectorAll('.admin-detail-img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = img.getAttribute('data-url');
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+      overlay.innerHTML = `<img src="${url}" style="max-width:90%;max-height:90%;object-fit:contain;">`;
+      overlay.addEventListener('click', () => overlay.remove());
+      document.body.appendChild(overlay);
+    });
   });
 }
 

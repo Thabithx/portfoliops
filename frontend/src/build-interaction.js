@@ -244,9 +244,9 @@ archCards.forEach(card => {
     // Update Timeline
     const type = card.getAttribute('data-type');
     let baselineWeeks = 1;
-    if(type === 'ecommerce') baselineWeeks = 3;
-    if(type === 'webapp') baselineWeeks = 4;
-    if(type === 'bespoke') baselineWeeks = 6;
+    if(type === 'ecommerce') baselineWeeks = 2;
+    if(type === 'webapp') baselineWeeks = 3;
+    if(type === 'bespoke') baselineWeeks = 4;
     
     const totalWeeks = baselineWeeks + globalQueueDelayWeeks;
     animateOdometer(quoteTimeline, totalWeeks, '', ' WEEKS');

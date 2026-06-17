@@ -77,3 +77,15 @@ export async function getOrderById(orderId) {
   const orders = await readJsonOrders();
   return orders.find(o => o.orderId === orderId) || null;
 }
+
+export async function deleteOrder(orderId) {
+  if (storageMode === 'mongo') {
+    const result = await Order.deleteOne({ orderId });
+    return result.deletedCount > 0;
+  }
+  const orders = await readJsonOrders();
+  const filtered = orders.filter(o => o.orderId !== orderId);
+  if (filtered.length === orders.length) return false;
+  await writeJsonOrders(filtered);
+  return true;
+}

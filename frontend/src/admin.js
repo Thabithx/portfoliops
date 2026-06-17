@@ -167,10 +167,36 @@ function openOrderDetail(order) {
       ${order.createdAt ? `<div class="detail-span-2"><span class="detail-label">Submitted</span><p>${new Date(order.createdAt).toLocaleString()}</p></div>` : ''}
     </div>
     ${imagesHtml}
+    <div class="detail-actions">
+      <button id="btn-delete-order" class="btn-delete-order" style="background:#ef4444;color:white;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Delete Order</button>
+    </div>
   `;
 
   detailOverlay.classList.add('open');
   detailOverlay.setAttribute('aria-hidden', 'false');
+
+  // Add delete button handler
+  document.getElementById('btn-delete-order').addEventListener('click', async () => {
+    if (!confirm(`Are you sure you want to delete order ${order.id}? This action cannot be undone.`)) return;
+
+    try {
+      const res = await fetch(`${getApiBase()}/orders/${order.id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete order');
+      }
+
+      closeOrderDetail();
+      await loadOrders();
+      renderTable();
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert('Failed to delete order. Please try again.');
+    }
+  });
 }
 
 function closeOrderDetail() {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createOrder, getOrderById, listOrders } from '../store.js';
+import { createOrder, getOrderById, listOrders, deleteOrder } from '../store.js';
 import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
       phone,
       features,
       assets,
+      imageUrls,
       invoiceUSD,
       currency,
       invoiceDisplay,
@@ -36,6 +37,7 @@ router.post('/', async (req, res) => {
       phone: String(phone).trim(),
       features: Array.isArray(features) ? features : [],
       assets: Number(assets) || 0,
+      imageUrls: Array.isArray(imageUrls) ? imageUrls : [],
       invoiceUSD: Number(invoiceUSD),
       currency: currency || 'USD',
       invoiceDisplay: invoiceDisplay || `$${invoiceUSD}`,
@@ -72,6 +74,17 @@ router.get('/:orderId', requireAdmin, async (req, res) => {
   } catch (err) {
     console.error('[orders] get error:', err);
     res.status(500).json({ error: 'Failed to fetch order.' });
+  }
+});
+
+router.delete('/:orderId', requireAdmin, async (req, res) => {
+  try {
+    const success = await deleteOrder(req.params.orderId);
+    if (!success) return res.status(404).json({ error: 'Order not found.' });
+    res.json({ success: true, message: 'Order deleted successfully' });
+  } catch (err) {
+    console.error('[orders] delete error:', err);
+    res.status(500).json({ error: 'Failed to delete order.' });
   }
 });
 

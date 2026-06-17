@@ -41,6 +41,7 @@ function normalizeOrder(raw) {
     phone: raw.phone || raw.whatsapp || '',
     features: raw.features || [],
     assets: raw.assets || 0,
+    imageUrls: raw.imageUrls || [],
     invoiceUSD,
     currency: raw.currency || 'USD',
     invoiceDisplay: raw.invoiceDisplay || raw.invoice || formatPriceUSD(invoiceUSD, raw.currency || 'USD'),
@@ -137,6 +138,19 @@ function openOrderDetail(order) {
     ? `<ul class="detail-feature-list">${order.features.map(f => `<li>${f}</li>`).join('')}</ul>`
     : '<span class="detail-muted">No add-on features selected</span>';
 
+  const imagesHtml = order.imageUrls && order.imageUrls.length > 0
+    ? `<div class="detail-images">
+        <span class="detail-label">Uploaded Images</span>
+        <div class="detail-image-grid">
+          ${order.imageUrls.map(url => `
+            <div class="detail-image-item">
+              <img src="${url}" alt="Reference image" onclick="window.open('${url}', '_blank')" style="cursor:pointer;max-width:100%;max-height:200px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);">
+            </div>
+          `).join('')}
+        </div>
+      </div>`
+    : '';
+
   detailBody.innerHTML = `
     <div class="detail-grid">
       <div><span class="detail-label">Order ID</span><p>${order.id}</p></div>
@@ -152,6 +166,7 @@ function openOrderDetail(order) {
       <div class="detail-span-2"><span class="detail-label">Selected Features</span>${featuresHtml}</div>
       ${order.createdAt ? `<div class="detail-span-2"><span class="detail-label">Submitted</span><p>${new Date(order.createdAt).toLocaleString()}</p></div>` : ''}
     </div>
+    ${imagesHtml}
   `;
 
   detailOverlay.classList.add('open');
@@ -181,7 +196,16 @@ function renderTable() {
     tr.setAttribute('aria-label', `View order ${order.id}`);
 
     let assetsHtml = '<span style="color:rgba(255,255,255,0.2);">—</span>';
-    if (order.assets > 0) {
+    if (order.imageUrls && order.imageUrls.length > 0) {
+      assetsHtml = `<div style="display:flex;gap:8px;flex-wrap:wrap;">`;
+      order.imageUrls.slice(0, 3).forEach(url => {
+        assetsHtml += `<img src="${url}" class="thumbnail" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;" onclick="event.stopPropagation();window.open('${url}', '_blank')">`;
+      });
+      if (order.imageUrls.length > 3) {
+        assetsHtml += `<span style="font-size:0.75rem;color:rgba(255,255,255,0.5);align-self:center;">+${order.imageUrls.length - 3}</span>`;
+      }
+      assetsHtml += `</div>`;
+    } else if (order.assets > 0) {
       assetsHtml = `<div style="display:flex;gap:8px;flex-wrap:wrap;">`;
       for (let i = 0; i < order.assets; i++) {
         assetsHtml += `<div class="thumbnail" style="background:#333;border:1px solid #555;"></div>`;

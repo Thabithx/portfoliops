@@ -7,12 +7,18 @@ dotenv.config();
 
 const router = express.Router();
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Check if Cloudinary is configured
+const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && 
+                               process.env.CLOUDINARY_API_KEY && 
+                               process.env.CLOUDINARY_API_SECRET;
+
+if (isCloudinaryConfigured) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+}
 
 // Configure Multer for memory storage
 const storage = multer.memoryStorage();
@@ -35,6 +41,19 @@ router.post('/', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
+    // If Cloudinary is not configured, return base64 data URL
+    if (!isCloudinaryConfigured) {
+      const base64 = req.file.buffer.toString('base64');
+      const dataUrl = `data:${req.file.mimetype};base64,${base64}`;
+      
+      return res.json({
+        success: true,
+        url: dataUrl,
+        fallback: true,
+        message: 'Cloudinary not configured, using base64 fallback'
+      });
+    }
+
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload_stream(
       {
@@ -48,7 +67,16 @@ router.post('/', upload.single('image'), async (req, res) => {
       (error, result) => {
         if (error) {
           console.error('Cloudinary upload error:', error);
-          return res.status(500).json({ error: 'Failed to upload image' });
+          // Fallback to base64 if Cloudinary fails
+          const base64 = req.file.buffer.toString('base64');
+          const dataUrl = `data:${req.file.mimetype};base64,${base64}`;
+          
+          return res.json({
+            success: true,
+            url: dataUrl,
+            fallback: true,
+            message: 'Cloudinary upload failed, using base64 fallback'
+          });
         }
         
         res.json({
@@ -65,6 +93,19 @@ router.post('/', upload.single('image'), async (req, res) => {
     result.end(req.file.buffer);
   } catch (error) {
     console.error('Upload error:', error);
+    // Fallback to base64 on any error
+    if (req.file) {
+      const base64 = req.file.buffer.toString('base64');
+      const dataUrl = `data:${req.file.mimetype};base64,${base64}`;
+      
+      return res.json({
+        success: true,
+        url: dataUrl,
+        fallback: true,
+        message: 'Upload error, using base64 fallback'
+      });
+    }
+    
     res.status(500).json({ error: 'Failed to upload image' });
   }
 });

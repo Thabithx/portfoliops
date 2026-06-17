@@ -22,12 +22,41 @@
       projects: [
         {
           id: 'luzzio',
-          tag: 'Fashion · Shopify & Liquid',
+          tag: 'Fashion · Full-Stack MERN',
           name: 'Luzzio Clothing',
-          desc: 'High-conversion premium fashion storefront built on Shopify. Designed with custom Liquid components, conversion rate optimization (CRO) mechanics, headless checkout pipelines, and micro-animation layers, driving a 34% increase in conversions.',
-          stack: ['Shopify', 'Liquid', 'JavaScript', 'CSS Animations', 'CRO'],
+          desc: 'Premium fashion e-commerce platform with a React storefront, Node.js REST API, and MongoDB product catalog. Includes Stripe and PayHere checkout, Cloudinary media, JWT auth, admin order management, and Framer Motion micro-interactions for a luxury shopping experience.',
+          stack: ['React (Vite)', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'PayHere', 'TailwindCSS', 'Framer Motion'],
           type: 'live',
-          url: 'https://luzzioclothing.com',
+          url: 'https://luzzio.vercel.app/',
+          urlLabel: 'Luzzio on Vercel',
+          links: [
+            { label: 'Luzzio Premium', url: 'https://luzziopremium.com' },
+            { label: 'Luzzio Clothing', url: 'https://luzzioclothing.com' },
+          ],
+          github: 'https://github.com/Thabithx/luzzio',
+          accentColor: '#10b981',
+          accentRgb: '16,185,129',
+        },
+        {
+          id: 'autoforge',
+          tag: 'Automotive · 3D Commerce',
+          name: 'AutoForge Vehicle Store',
+          desc: 'Immersive 3D vehicle showroom where customers explore cars with interactive GLTF models powered by React Three Fiber. Includes brand and price filtering, vehicle detail pages, and a Node.js/MongoDB backend for inventory management.',
+          stack: ['React Three Fiber', 'Three.js', 'React (Vite)', 'TailwindCSS', 'Node.js', 'Express', 'MongoDB'],
+          type: 'image',
+          github: 'https://github.com/Thabithx/autoforge',
+          images: ['src/experience-previews/autoforge.png'],
+          accentColor: '#10b981',
+          accentRgb: '16,185,129',
+        },
+        {
+          id: 'whiterose',
+          tag: 'Organic Retail · Shopify',
+          name: 'White Rose Organics',
+          desc: 'Premium organic product storefront engineered for trust, speed, and retention. Built with custom Shopify Liquid components, a multi-SKU variant selector, aggressive asset optimization for sub-1s load times, and a frictionless checkout flow designed to maximize conversions.',
+          stack: ['Shopify', 'Liquid', 'JavaScript', 'Speed Optimisation', 'CRO', 'A/B Testing'],
+          type: 'live',
+          url: 'https://whiteroseorganics.com',
           accentColor: '#10b981',
           accentRgb: '16,185,129',
         },
@@ -38,7 +67,28 @@
           desc: 'A full-stack e-commerce platform built for workspace wellness and ergonomics. Features custom cart management, role-based admin controls, dynamic product catalogs, and notification hubs built without complex frameworks to optimize performance.',
           stack: ['PHP 8', 'Vanilla JavaScript', 'MySQL', 'Vanilla CSS Design System', 'Glassmorphism UI'],
           type: 'live',
-          url: 'https://github.com/Thabithx/deskly',
+          github: 'https://github.com/Thabithx/deskly',
+          accentColor: '#10b981',
+          accentRgb: '16,185,129',
+        },
+        {
+          id: 'clothing-store',
+          tag: 'Fashion · React & Payments',
+          name: 'Fashion Commerce Store',
+          desc: 'Full-stack clothing storefront with product collections, cart, checkout, and order tracking. Integrates Stripe and Razorpay payment gateways, Cloudinary image uploads, JWT authentication, and a responsive React UI with search and toast notifications.',
+          stack: ['React (Vite)', 'TailwindCSS', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'Razorpay', 'Cloudinary'],
+          type: 'live',
+          accentColor: '#10b981',
+          accentRgb: '16,185,129',
+        },
+        {
+          id: 'shoe-store',
+          tag: 'Footwear · TypeScript MERN',
+          name: 'Allaia Shoe Store',
+          desc: 'Modern shoe e-commerce app with a TypeScript React frontend and Express API backend. Built with RESTful product CRUD, MongoDB persistence, global ShopContext state, React Router pages, and TailwindCSS styling for a clean retail experience.',
+          stack: ['React', 'TypeScript', 'Vite', 'TailwindCSS', 'Node.js', 'Express', 'MongoDB', 'Axios'],
+          type: 'live',
+          github: 'https://github.com/Thabithx/store',
           accentColor: '#10b981',
           accentRgb: '16,185,129',
         },
@@ -54,16 +104,26 @@
       accentSecondary: '#a855f7',
       projects: [
         {
-          id: 'spotterapp',
-          tag: 'Geo-Discovery · PWA',
-          name: 'Spotter App',
-          desc: 'Hyper-local discovery platform allowing users to find hidden gems and unique local spots. Built with a responsive mobile-first PWA architecture, Mapbox GL geographic styling, custom spatial query algorithms, and MongoDB storage layers for offline search support.',
-          stack: ['Node.js', 'Express', 'Mapbox API', 'MongoDB', 'PWA', 'TailwindCSS'],
+          id: 'spotter',
+          tag: 'Geo-Discovery · Full-Stack Web',
+          name: 'Spotter Web Platform',
+          desc: 'Community-driven place discovery platform with a deep black glassmorphism UI. Users discover, share, and save hidden gems via Leaflet map pinning, vibe-based filtering, real-time search, reviews with star ratings, and JWT-secured REST APIs backed by MongoDB geospatial indexing.',
+          stack: ['Node.js', 'Express', 'MongoDB', 'Leaflet.js', 'JWT', 'Vanilla CSS', 'Cloudinary'],
           type: 'image',
-          images: [
-            'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80',
-            'https://images.unsplash.com/photo-1569982175971-d92b01cf8694?w=800&q=80',
-          ],
+          github: 'https://github.com/Thabithx/spotter',
+          images: ['src/experience-previews/spotter-web.png'],
+          accentColor: '#0ea5e9',
+          accentRgb: '14,165,233',
+        },
+        {
+          id: 'spotterapp',
+          tag: 'Geo-Discovery · Android Native',
+          name: 'Spotter Android App',
+          desc: 'Native Android companion for discovering and sharing local places. Features Google Maps integration, Firebase Firestore and Storage, user authentication, place reviews, favorites, profile management, and OpenWeather API for location-aware experiences.',
+          stack: ['Java', 'Android SDK', 'Firebase Firestore', 'Google Maps SDK', 'Material Design', 'Glide'],
+          type: 'image',
+          github: 'https://github.com/Thabithx/spotterapp',
+          images: ['src/experience-previews/spotter-android.png'],
           accentColor: '#0ea5e9',
           accentRgb: '14,165,233',
         },
@@ -103,14 +163,11 @@
         {
           id: 'medicare',
           tag: 'Desktop Java · MySQL',
-          name: 'Medicare Operations',
-          desc: 'High-performance desktop-based medical operations platform. Designed with custom Swing components, deep Java AWT 2D graphics rendering, time analytics reporting, and MySQL storage supporting secure doctor and patient ledger management.',
+          name: 'Medicare Hospital Management',
+          desc: 'Desktop hospital management system with a custom Smart UI engine built on Java AWT 2D graphics. Supports role-based access for admins, doctors, and receptionists with appointment scheduling, patient/doctor management, notifications, and real-time analytics reporting.',
           stack: ['Java 17', 'Java AWT & Swing', 'MySQL', 'MVC Architecture', 'Role-Based Access Control'],
-          type: 'image',
-          images: [
-            'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
-            'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
-          ],
+          type: 'live',
+          github: 'https://github.com/Thabithx/medicare',
           accentColor: '#ef4444',
           accentRgb: '239,68,68',
         },
@@ -118,13 +175,11 @@
           id: 'eCitizen',
           tag: 'Digital NID · Security',
           name: 'eCitizen Platform',
-          desc: 'A revolutionary digital identity ecosystem streamlining government applications. Features automated National ID PDF generation with embedded QR codes, JWT role security, document management via Cloudinary, and benefit cards.',
+          desc: 'Digital identity platform for online National ID registration. Citizens apply from home with document uploads, track application status in real time, and receive PDF IDs with embedded QR codes. Admins review applications via a centralized dashboard with healthcare benefit card issuance.',
           stack: ['Node.js', 'Express.js', 'MongoDB', 'Cloudinary', 'PDFKit', 'Bootstrap 5', 'JWT'],
           type: 'image',
-          images: [
-            'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',
-            'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
-          ],
+          github: 'https://github.com/Thabithx/eCitizen',
+          images: ['src/experience-previews/ecitizen.png'],
           accentColor: '#ef4444',
           accentRgb: '239,68,68',
         },
@@ -609,13 +664,12 @@
 
     // Media
     mediaEl.innerHTML = '';
-    if (proj.type === 'live') {
-      const ph = document.createElement('div');
-      ph.className = 'media-placeholder';
-      ph.innerHTML = `🌐<span>Live production site</span>`;
-      mediaEl.appendChild(ph);
-    } else if (proj.type === 'image' && proj.images && proj.images.length) {
-      // Image gallery — show up to 2 images side by side
+    if (proj.images && proj.images.length) {
+      mediaEl.style.display = 'block';
+      mediaEl.style.background = 'rgba(0,0,0,0.5)';
+      mediaEl.style.height = 'auto';
+      mediaEl.style.maxHeight = 'none';
+      mediaEl.style.overflow = 'auto';
       const gallery = document.createElement('div');
       gallery.className = 'media-gallery';
       proj.images.forEach(src => {
@@ -623,15 +677,19 @@
         img.src = src;
         img.alt = proj.name;
         img.className = 'media-gallery-img';
-        img.loading = 'lazy';
+        img.loading = 'eager';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.objectFit = 'contain';
+        img.style.imageRendering = 'auto';
         gallery.appendChild(img);
       });
       mediaEl.appendChild(gallery);
     } else {
-      const ph = document.createElement('div');
-      ph.className = 'media-placeholder';
-      ph.innerHTML = `🎬<span>System tour</span>`;
-      mediaEl.appendChild(ph);
+      mediaEl.style.display = 'none';
+      mediaEl.style.background = 'transparent';
+      mediaEl.style.height = '0';
+      mediaEl.style.overflow = 'hidden';
     }
 
     // Tag
@@ -661,17 +719,42 @@
       btn.href      = proj.url;
       btn.target    = '_blank';
       btn.rel       = 'noopener noreferrer';
-      btn.innerHTML = 'Launch Live Production ↗';
+      btn.innerHTML = `${proj.urlLabel || 'Launch Live Site'} ↗`;
       actionsEl.appendChild(btn);
     }
-    const closeBtn2 = document.createElement('button');
-    closeBtn2.className = 'detail-btn secondary';
-    closeBtn2.textContent = 'Back to categories';
-    closeBtn2.addEventListener('click', closeDetail);
-    actionsEl.appendChild(closeBtn2);
+    if (proj.links && proj.links.length) {
+      proj.links.forEach(link => {
+        const extraBtn = document.createElement('a');
+        extraBtn.className = 'detail-btn primary';
+        extraBtn.href      = link.url;
+        extraBtn.target    = '_blank';
+        extraBtn.rel       = 'noopener noreferrer';
+        extraBtn.innerHTML = `${link.label} ↗`;
+        actionsEl.appendChild(extraBtn);
+      });
+    }
+    if (proj.github) {
+      const ghBtn = document.createElement('a');
+      ghBtn.className = 'detail-btn primary';
+      ghBtn.href      = proj.github;
+      ghBtn.target    = '_blank';
+      ghBtn.rel       = 'noopener noreferrer';
+      ghBtn.innerHTML = 'View on GitHub ↗';
+      actionsEl.appendChild(ghBtn);
+    }
 
     // Show
     overlay.setAttribute('aria-hidden', 'false');
+
+    const inner = overlay.querySelector('.proj-detail-inner');
+    if (inner) inner.scrollTop = 0;
+    overlay.scrollTop = 0;
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    document.body.style.overflow = 'hidden';
+
     requestAnimationFrame(() => overlay.classList.add('open'));
   }
 
@@ -680,6 +763,10 @@
     if (!overlay) return;
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    const inner = overlay.querySelector('.proj-detail-inner');
+    if (inner) inner.scrollTop = 0;
+    overlay.scrollTop = 0;
     // Pause any video
     const vid = overlay.querySelector('video');
     if (vid) vid.pause();

@@ -144,11 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ro.observe(wrap);
   }
 
-  // Load 3D models instantly without waiting for window load
-  setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
-  setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
-  setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
-
   /* ─────────────────────────────────────────
      4. FLY-IN PAGE TRANSITIONS
   ───────────────────────────────────────── */
@@ -162,6 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let currentPage = 'home';
+
+  // Load 3D models instantly after currentPage is defined
+  setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
+  setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
+  setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
 
   function navigateTo(target, ox = 50, oy = 50) {
     if (target === 'build') {

@@ -207,16 +207,15 @@ body.build-body {
 
 .btn-add-image-desktop {
   display: block;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: transparent;
   border: none;
   color: #fff; padding: 10px 20px; border-radius: 6px; font-family: inherit;
   font-size: 0.85rem; cursor: pointer; position: relative; z-index: 10;
   transition: all 0.3s ease;
+  margin: 0 auto;
 }
 .btn-add-image-desktop:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .btn-compile {

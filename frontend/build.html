@@ -146,8 +146,10 @@
           <!-- Module B: Mockup Dropdeck -->
           <div class="asset-dropper" id="asset-dropper">
             <input type="file" id="asset-input-mobile" accept="image/*" multiple style="display:none;" />
+            <input type="file" id="asset-input-desktop" accept="image/*" multiple style="display:none;" />
             <div class="dropper-content">
               <p class="drop-text-desktop"> 📸 Drop reference images or visual mockups here </p>
+              <button class="btn-add-image-desktop" onclick="document.getElementById('asset-input-desktop').click()">+ Add Images</button>
               <button class="btn-add-image-mobile" onclick="document.getElementById('asset-input-mobile').click()">+ Add Images</button>
             </div>
             <div id="polaroid-container" class="polaroid-container"></div>

@@ -2823,10 +2823,10 @@ html, body {
 }
 
 /* Extra small devices (iPhone 17, iPhone 16, iPhone SE, etc.) */
-@media (max-width: 430px) {
+@media (max-width: 393px) {
   .hero-scene { padding-top: 3vh; }
   .hero-quote-bare .quote-line { font-size: 2.2rem; }
-  .islands-stage { transform: translateY(3vh); gap: 0.3rem !important; }
+  .islands-stage { transform: translateY(3vh); gap: 0.2rem !important; }
   .island-3d-wrap { width: 160px; height: 140px; }
   .island--center .island-3d-wrap { width: 200px; height: 180px; }
   .island-title { font-size: 0.75rem; }
@@ -2839,4 +2839,9 @@ html, body {
   .about-text-block p { font-size: 0.85rem; }
   .skill-tag { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
   .orbit-card-wrap { width: 260px; height: 380px; margin-top: -190px; margin-left: -130px; }
+}
+
+/* iPhone 17 Pro Max */
+@media (max-width: 430px) and (min-width: 394px) {
+  .islands-stage { gap: 0.08rem !important; }
 }

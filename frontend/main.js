@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
      canvas with the GLB model slowly spinning.
   ───────────────────────────────────────── */
   const loader = new GLTFLoader();
+  // Optimize loader for faster loading
+  loader.manager.itemStart('manual');
 
   /**
    * @param {string} canvasId  — id of the <canvas> element
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 430; // Include more devices
-    const adjustedTargetSize = isSmallDevice ? targetSize * 1.10 : targetSize; // 10% larger for small devices
+    const adjustedTargetSize = isSmallDevice ? targetSize * 1.15 : targetSize; // 15% larger for small devices (5% bigger than before)
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;
@@ -144,6 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ro.observe(wrap);
   }
 
+  // Load 3D models instantly without delay
+  window.addEventListener('load', () => {
+    setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
+    setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
+    setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
+  });
+
   /* ─────────────────────────────────────────
      4. FLY-IN PAGE TRANSITIONS
   ───────────────────────────────────────── */
@@ -157,11 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let currentPage = 'home';
-
-  // Load 3D models instantly after currentPage is defined
-  setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
-  setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
-  setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
 
   function navigateTo(target, ox = 50, oy = 50) {
     if (target === 'build') {

@@ -33,9 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 430; // Include more devices
     const isLargePhone = window.innerWidth >= 412 && window.innerWidth <= 430; // Large phones (iPhone 13/14/15 Pro Max, S24 Ultra)
+    const isMediumScreen = window.innerWidth >= 431 && window.innerWidth <= 770; // Medium screens (430-770px)
     let adjustedTargetSize = targetSize;
-    if (isLargePhone) {
-      adjustedTargetSize = targetSize * 1.29; // 30% larger for large phones
+    if (isMediumScreen) {
+      adjustedTargetSize = targetSize * 0.85; // 15% smaller for medium screens
+    } else if (isLargePhone) {
+      adjustedTargetSize = targetSize * 1.29; // 29% larger for large phones
     } else if (isSmallDevice) {
       adjustedTargetSize = targetSize * 1.15; // 15% larger for small devices
     }

@@ -2845,3 +2845,8 @@ html, body {
 @media (max-width: 430px) and (min-width: 394px) {
   .islands-stage { gap: 0.28rem !important; }
 }
+
+/* Medium screens (430-770px) */
+@media (min-width: 431px) and (max-width: 770px) {
+  .islands-stage { gap: 0.15rem !important; }
+}

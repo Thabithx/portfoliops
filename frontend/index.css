@@ -2841,7 +2841,7 @@ html, body {
   .orbit-card-wrap { width: 260px; height: 380px; margin-top: -190px; margin-left: -130px; }
 }
 
-/* iPhone 17 Pro Max */
+/* iPhone 14 Pro Max and iPhone 17 Pro Max */
 @media (max-width: 430px) and (min-width: 394px) {
-  .islands-stage { gap: 0.08rem !important; }
+  .islands-stage { gap: 0.25rem !important; }
 }

@@ -32,7 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 430; // Include more devices
-    const adjustedTargetSize = isSmallDevice ? targetSize * 1.15 : targetSize; // 15% larger for small devices (5% bigger than before)
+    const isIPhone14ProMax = window.innerWidth === 430; // iPhone 14 Pro Max specific
+    let adjustedTargetSize = targetSize;
+    if (isIPhone14ProMax) {
+      adjustedTargetSize = targetSize * 1.15; // 15% larger for iPhone 14 Pro Max
+    } else if (isSmallDevice) {
+      adjustedTargetSize = targetSize * 1.15; // 15% larger for small devices
+    }
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 430; // Include more devices
-    const adjustedTargetSize = isSmallDevice ? targetSize * 0.85 : targetSize; // 15% smaller for small devices
+    const adjustedTargetSize = isSmallDevice ? targetSize * 0.95 : targetSize; // 5% smaller for small devices (10% bigger than before)
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── PIVOT GROUP ───────────────────────────
     const pivotGroup = new THREE.Group();
     // Centered vertically to prevent clipping at the canvas borders
-    pivotGroup.position.y = 0.0;
+    pivotGroup.position.y = -0.5;
     scene.add(pivotGroup);
 
 

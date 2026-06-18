@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMediumScreen = window.innerWidth >= 431 && window.innerWidth <= 770; // Medium screens (430-770px)
     let adjustedTargetSize = targetSize;
     if (isMediumScreen) {
-      adjustedTargetSize = targetSize * 0.85; // 15% smaller for medium screens
+      adjustedTargetSize = targetSize * 0.80; // 15% smaller for medium screens
     } else if (isLargePhone) {
       adjustedTargetSize = targetSize * 1.29; // 29% larger for large phones
     } else if (isSmallDevice) {

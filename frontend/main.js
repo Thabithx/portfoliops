@@ -144,17 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ro.observe(wrap);
   }
 
-  // Defer loading 3D models slightly to let the critical layout/styles/fonts load first on slow connections
-  // Also defer on mobile to prioritize initial render
-  const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-  const loadDelay = isMobile ? 200 : 100;
-  
+  // Load 3D models instantly without delay
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
-      setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
-      setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
-    }, loadDelay);
+    setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
+    setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
+    setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
   });
 
   /* ─────────────────────────────────────────

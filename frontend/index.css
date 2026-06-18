@@ -2843,5 +2843,5 @@ html, body {
 
 /* iPhone 14 Pro Max and iPhone 17 Pro Max */
 @media (max-width: 430px) and (min-width: 394px) {
-  .islands-stage { gap: 0.25rem !important; }
+  .islands-stage { gap: 0.28rem !important; }
 }

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLargePhone = window.innerWidth >= 412 && window.innerWidth <= 430; // Large phones (iPhone 13/14/15 Pro Max, S24 Ultra)
     let adjustedTargetSize = targetSize;
     if (isLargePhone) {
-      adjustedTargetSize = targetSize * 1.30; // 30% larger for large phones
+      adjustedTargetSize = targetSize * 1.29; // 30% larger for large phones
     } else if (isSmallDevice) {
       adjustedTargetSize = targetSize * 1.15; // 15% larger for small devices
     }

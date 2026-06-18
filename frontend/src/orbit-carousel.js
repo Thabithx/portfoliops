@@ -615,6 +615,9 @@
   /* ═══════════════════════════════════════
      ANIMATION LOOP
   ═══════════════════════════════════════ */
+  let lastPositionUpdate = 0;
+  const POSITION_UPDATE_INTERVAL = 16; // ~60fps
+
   function tick(ts) {
     const dt = Math.min((ts - lastTs) / 1000, 0.05);
     lastTs = ts;
@@ -644,7 +647,12 @@
       }
     }
 
-    positionCards();
+    // Throttle position updates for better performance
+    if (ts - lastPositionUpdate >= POSITION_UPDATE_INTERVAL) {
+      positionCards();
+      lastPositionUpdate = ts;
+    }
+
     rafId = requestAnimationFrame(tick);
   }
 

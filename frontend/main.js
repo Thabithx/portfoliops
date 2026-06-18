@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Defer loading 3D models slightly to let the critical layout/styles/fonts load first on slow connections
   // Also defer on mobile to prioritize initial render
   const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-  const loadDelay = isMobile ? 1500 : 500;
+  const loadDelay = isMobile ? 200 : 100;
   
   window.addEventListener('load', () => {
     setTimeout(() => {

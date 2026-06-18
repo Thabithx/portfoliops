@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust target size for small devices like iPhone 17
     const isSmallDevice = window.innerWidth <= 430; // Include more devices
-    const adjustedTargetSize = isSmallDevice ? targetSize * 1.05 : targetSize; // 5% larger for small devices
+    const adjustedTargetSize = isSmallDevice ? targetSize * 1.10 : targetSize; // 10% larger for small devices
 
     // Dimensions from CSS layout
     const wrap = canvas.parentElement;
@@ -144,12 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ro.observe(wrap);
   }
 
-  // Load 3D models instantly without delay
-  window.addEventListener('load', () => {
-    setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
-    setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
-    setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
-  });
+  // Load 3D models instantly without waiting for window load
+  setupIsland('canvas-experiences', 'src/floating_minecraft_island_medieval.glb',     0.0025, 3.8);
+  setupIsland('canvas-about',       'src/hollow_knight.glb',                          0.0030, 4.2);
+  setupIsland('canvas-build',       'src/hammer.glb',                                 0.0020, 3.7);
 
   /* ─────────────────────────────────────────
      4. FLY-IN PAGE TRANSITIONS

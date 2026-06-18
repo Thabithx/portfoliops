@@ -92,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── PIVOT GROUP ───────────────────────────
     const pivotGroup = new THREE.Group();
     // Centered vertically to prevent clipping at the canvas borders
-    pivotGroup.position.y = -0.5;
+    // Move up for large phones
+    pivotGroup.position.y = isLargePhone ? 0.0 : -0.5;
     scene.add(pivotGroup);
 
 

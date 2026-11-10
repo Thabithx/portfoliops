@@ -2850,3 +2850,744 @@ html, body {
 @media (min-width: 431px) and (max-width: 770px) {
   .islands-stage { gap: 0.29rem !important; }
 }
+
+/* Skills dots (cloned from orbit-dots) */
+.skills-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.skills-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+.skills-dot.active {
+  width: 32px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+@media (max-width: 768px) {
+  .skills-dot { width: 8px; height: 8px; }
+  .skills-dot.active { width: 24px; }
+}
+
+/* SKILLS CARDS (wider version of orbit cards) */
+.skills-card-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 450px;
+  margin-top: -225px;
+  margin-left: -300px;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.skills-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: rgba(15, 20, 30, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  backface-visibility: hidden;
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-card--front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+.skills-card--back {
+  transform: rotateY(180deg);
+  background: rgba(10, 15, 25, 0.85);
+  z-index: 1;
+  overflow-y: auto;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Let the back card scroll smoothly */
+.skills-card--back::-webkit-scrollbar { width: 6px; }
+.skills-card--back::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+/* Mobile resizing for skills cards */
+@media (max-width: 1024px) {
+  .skills-card-wrap {
+    width: 80vw;
+    height: 60vh;
+    margin-left: -40vw;
+    margin-top: -30vh;
+  }
+}
+@media (max-width: 768px) {
+  .skills-card-wrap {
+    width: 90vw;
+    height: 65vh;
+    margin-left: -45vw;
+    margin-top: -32.5vh;
+  }
+}
+
+/* ═══════════════════════════════════════
+   SKILLS CARD — Section Tabs (back face)
+═══════════════════════════════════════ */
+.skills-section-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.skills-section-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skills-sec-btn {
+  padding: 0.38rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  background: rgba(168, 85, 247, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.72rem;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.skills-sec-btn:hover {
+  background: rgba(168, 85, 247, 0.2);
+  color: #fff;
+  border-color: rgba(168, 85, 247, 0.6);
+}
+
+.skills-sec-btn.active {
+  background: rgba(168, 85, 247, 0.35);
+  color: #fff;
+  border-color: rgba(168, 85, 247, 0.8);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+}
+
+.skills-section-content {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: pre-line;
+  padding-right: 0.25rem;
+}
+
+.skills-section-content::-webkit-scrollbar {
+  width: 4px;
+}
+.skills-section-content::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════
+   SKILLS POPUP OVERLAY
+═══════════════════════════════════════ */
+.skills-popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.skills-popup-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.skills-popup-card {
+  background: rgba(15, 20, 30, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-popup-overlay.open .skills-popup-card {
+  transform: translateY(0) scale(1);
+}
+
+.skills-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.skills-popup-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.skills-popup-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+}
+.skills-popup-close:hover {
+  color: #fff;
+}
+
+.skills-popup-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: pre-wrap;
+}
+
+.skills-popup-body::-webkit-scrollbar { width: 6px; }
+.skills-popup-body::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 4px; }
+
+/* ═══════════════════════════════════════
+   LECTURE CONTENT STYLING
+═══════════════════════════════════════ */
+.proj-detail-desc p {
+  margin-bottom: 1.25rem;
+}
+.proj-detail-desc p:last-child {
+  margin-bottom: 0;
+}
+
+.lecture-bullets {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+}
+.lecture-bullets li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.lecture-bullets li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: rgba(168, 85, 247, 0.8);
+  font-size: 1.2em;
+  line-height: 1;
+}
+.lecture-bullets li:last-child {
+  margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════
+   INLINE LECTURE MEDIA
+═══════════════════════════════════════ */
+.lecture-img-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.25rem 0 1.5rem 0;
+  width: 100%;
+}
+.lecture-small-img {
+  max-width: 440px;
+  max-height: 270px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.02);
+  display: block;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lecture-small-img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 14px 40px rgba(168, 85, 247, 0.3);
+}
+.cv-wrap {
+  margin: 0.5rem 0 1.5rem 0;
+}
+.lecture-cv-img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.65);
+  display: block;
+}
+
+/* Multi-image gallery for group work and full CV */
+.lecture-img-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  justify-content: center;
+  align-items: center;
+  margin: 1.25rem 0 1.5rem 0;
+  width: 100%;
+}
+.lecture-img-gallery .lecture-small-img {
+  max-width: min(100%, 340px);
+  max-height: 240px;
+  object-fit: cover;
+}
+.cv-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 1rem 0 2rem 0;
+  width: 100%;
+}
+.cv-gallery .lecture-cv-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+  background: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKILLS DETAIL MODAL — Split Layout (v15)
+   Left: scrollable content  |  Right: section nav sidebar
+═══════════════════════════════════════════════════════════ */
+
+/* Override the base proj-detail-inner for the skills modal */
+.skills-detail-shell {
+  max-width: min(96vw, 1120px);
+  width: 96vw;
+  border-radius: 24px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+/* Outer split wrapper */
+.skills-modal-split {
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Left: Scrollable content area ─────────────────────── */
+.skills-modal-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 2.5rem 2.25rem 2.5rem 2.5rem;
+  scroll-behavior: smooth;
+}
+
+/* ── Right: Section nav sidebar ─────────────────────────── */
+.skills-modal-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.015);
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1rem;
+  overflow-y: auto;
+  gap: 0.25rem;
+}
+
+.skills-sidebar-head {
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.skills-sidebar-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Nav button */
+.skills-nav-btn {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: background 0.18s, color 0.18s;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.skills-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.skills-nav-btn.active {
+  background: rgba(var(--card-accent-rgb, 129,140,248), 0.13);
+  color: #fff;
+}
+
+.skills-nav-indicator {
+  width: 3px;
+  min-width: 3px;
+  height: 1.1em;
+  border-radius: 2px;
+  flex-shrink: 0;
+  opacity: 0.25;
+  transition: opacity 0.18s;
+}
+
+.skills-nav-btn.active .skills-nav-indicator {
+  opacity: 1;
+}
+
+.skills-nav-title {
+  flex: 1;
+}
+
+/* ── Creative single-image: glassmorphism frame ─────────── */
+.creative-showcase-single {
+  padding: 1rem 0 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.creative-glass-frame {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  max-width: 520px;
+  width: 100%;
+}
+
+.creative-frame-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.0) 50%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.creative-showcase-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 340px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ── Creative multi-image: photo grid ───────────────────── */
+.creative-showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 0.5rem 0 2rem;
+}
+
+.creative-grid-card {
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.creative-card-inner {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.creative-grid-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.creative-grid-card:hover .creative-grid-img {
+  transform: scale(1.04);
+}
+
+.creative-card-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+/* ── CV Document viewer ──────────────────────────────────── */
+.modern-cv-viewer {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  margin: 0.5rem 0 2rem;
+}
+
+.cv-viewer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cv-toolbar-left,
+.cv-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cv-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cv-viewer-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cv-viewer-pill {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  padding: 0.15rem 0.6rem;
+}
+
+.cv-open-link {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+
+.cv-open-link:hover {
+  opacity: 1;
+}
+
+.cv-pages-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.015);
+  padding: 1rem;
+  gap: 1.25rem;
+}
+
+.cv-page-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.cv-page-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 100px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.cv-page-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Lecture bullets & numbered lists ───────────────────── */
+.lecture-bullets,
+.lecture-ol {
+  padding-left: 1.4rem;
+  margin: 0.6rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lecture-bullets li,
+.lecture-ol li {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.65;
+  font-size: 0.93rem;
+}
+
+/* ── Responsive: stack on small screens ─────────────────── */
+@media (max-width: 680px) {
+  .skills-modal-split {
+    flex-direction: column-reverse;
+    overflow-y: auto;
+  }
+
+  .skills-modal-main {
+    padding: 1.5rem 1.25rem;
+    overflow-y: visible;
+  }
+
+  .skills-modal-sidebar {
+    width: 100%;
+    border-left: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .skills-nav-btn {
+    width: auto;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .skills-nav-btn.active {
+    border-color: rgba(var(--card-accent-rgb, 129,140,248), 0.4);
+  }
+
+  .skills-nav-indicator {
+    display: none;
+  }
+
+  .creative-showcase-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .creative-card-inner {
+    height: 200px;
+  }
+
+  .skills-detail-shell {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .skills-sidebar-head {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD & MODAL SPACING ENHANCEMENTS
+═══════════════════════════════════════════════════════════ */
+
+/* Spacing between card topic header and section buttons on back face */
+.card-back-header {
+  margin-bottom: 1.85rem !important;
+  padding-bottom: 1.15rem !important;
+}
+
+.card-back-title {
+  margin-bottom: 0.35rem;
+}
+
+.skills-section-container {
+  gap: 1.1rem;
+}
+
+.skills-section-btns {
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+/* Modal header: spacing between section tag (pill) and card topic title */
+#skills-modal-main #skills-detail-tag {
+  margin-bottom: 1.25rem;
+  display: inline-block;
+}
+
+#skills-modal-main #skills-detail-title {
+  margin-bottom: 1.75rem;
+  line-height: 1.25;
+}

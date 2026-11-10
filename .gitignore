@@ -2,3 +2,10 @@
 node_modules/
 .env
 server/data/
+
+# Ignore root duplicates and dev files
+index.html
+index.css
+main.js
+/src/
+/scripts/.logs/

@@ -1,8 +1,0 @@
-Error: querySrv ENOTFOUND _mongodb._tcp.vehicles.ncm6wlg.mongodb.net
-    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:293:17) {
-  errno: undefined,
-  code: 'ENOTFOUND',
-  syscall: 'querySrv',
-  hostname: '_mongodb._tcp.vehicles.ncm6wlg.mongodb.net'
-}
-Server started at http://localhost:5002

@@ -171,21 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
     home:        document.getElementById('page-home'),
     experiences: document.getElementById('page-experiences'),
     about:       document.getElementById('page-about'),
-    build:       document.getElementById('page-build'),
+    skills:      document.getElementById('page-skills'),
   };
 
   let currentPage = 'home';
 
   function navigateTo(target, ox = 50, oy = 50) {
-    if (target === 'build') {
-      window.location.href = 'build.html';
-      return;
-    }
+    
     if (target === currentPage) return;
 
     // Stop orbit carousel if leaving experiences
     if (currentPage === 'experiences' && window.OrbitCarousel) {
       window.OrbitCarousel.stop();
+    }
+    if (currentPage === 'skills' && window.SkillsCarousel) {
+      window.SkillsCarousel.stop();
     }
     // Stop about physics if leaving about
     if (currentPage === 'about' && window.AboutGSAP) {
@@ -209,6 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Start engines for specific pages
       if (target === 'experiences' && window.OrbitCarousel) {
         setTimeout(() => window.OrbitCarousel.start(), 120);
+      }
+      if (target === 'skills' && window.SkillsCarousel) {
+        setTimeout(() => window.SkillsCarousel.start(), 120);
       }
       if (target === 'about' && window.AboutGSAP) {
         setTimeout(() => window.AboutGSAP.start(), 120);
@@ -259,12 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   backBtn.addEventListener('click', () => navigateTo('home', 50, 50));
 
-  document.getElementById('btn-success-close')?.addEventListener('click', () => {
-    document.getElementById('wizard-success-card').classList.remove('visible');
-    document.getElementById('wizard-card').style.display = '';
-    resetWizard();
-    navigateTo('home', 50, 50);
-  });
+
 
   /* ─────────────────────────────────────────
      5. 3D CARD TILT
@@ -314,154 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(draw);
     }
     draw();
-  }
-
-  /* ─────────────────────────────────────────
-     7. CALENDAR
-  ───────────────────────────────────────── */
-  let calYear  = new Date().getFullYear();
-  let calMonth = new Date().getMonth();
-  let selDay   = null;
-  let selTime  = null;
-  const MONTHS = ['January','February','March','April','May','June',
-                  'July','August','September','October','November','December'];
-
-  function renderCalendar() {
-    const grid  = document.getElementById('calendar-days-grid');
-    const label = document.getElementById('calendar-month-year');
-    if (!grid || !label) return;
-    label.textContent = `${MONTHS[calMonth]} ${calYear}`;
-    const firstDay    = new Date(calYear, calMonth, 1).getDay();
-    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    const today       = new Date();
-    grid.innerHTML    = '';
-    for (let i = 0; i < firstDay; i++) {
-      const e = document.createElement('div');
-      e.className = 'cal-day empty';
-      grid.appendChild(e);
-    }
-    for (let d = 1; d <= daysInMonth; d++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'cal-day available';
-      btn.setAttribute('data-interactive', '');
-      btn.textContent = d;
-      if (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear())
-        btn.classList.add('today');
-      if (d === selDay) btn.classList.add('selected');
-      btn.addEventListener('click', () => {
-        grid.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
-        btn.classList.add('selected');
-        selDay = d;
-        validateStep4();
-      });
-      grid.appendChild(btn);
-    }
-  }
-
-  document.getElementById('prev-month')?.addEventListener('click', () => {
-    if (--calMonth < 0) { calMonth = 11; calYear--; }
-    selDay = null; renderCalendar();
-  });
-  document.getElementById('next-month')?.addEventListener('click', () => {
-    if (++calMonth > 11) { calMonth = 0; calYear++; }
-    selDay = null; renderCalendar();
-  });
-  renderCalendar();
-
-  document.querySelectorAll('.time-slot').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selTime = btn.dataset.time;
-      validateStep4();
-    });
-  });
-
-  function validateStep4() {
-    const email = (document.getElementById('client-email')?.value || '').trim();
-    const ok    = selDay && selTime && /\S+@\S+\.\S+/.test(email);
-    if (currentWizardStep === 4) setNextEnabled(ok);
-  }
-  document.getElementById('client-email')?.addEventListener('input', validateStep4);
-
-  /* ─────────────────────────────────────────
-     8. MULTI-STEP WIZARD
-  ───────────────────────────────────────── */
-  let currentWizardStep = 1;
-  const TOTAL_STEPS = 4;
-  const STEP_TITLES = [
-    'What architecture are we bringing to life today?',
-    'What is your target launch window?',
-    'A note on investment and partnership.',
-    "Let's schedule our discovery session.",
-  ];
-  const wizardData = { type: null, timeline: null, ratesOk: false };
-
-  const progressBar   = document.getElementById('wizard-progress');
-  const stepIndicator = document.getElementById('step-indicator');
-  const wizardTitle   = document.getElementById('wizard-title');
-  const btnNext       = document.getElementById('btn-wizard-next');
-  const btnBack       = document.getElementById('btn-wizard-back');
-
-  function setNextEnabled(v) { btnNext.disabled = !v; }
-
-  function goToWizardStep(n) {
-    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-    document.getElementById(`wizard-step-${n}`)?.classList.add('active');
-    currentWizardStep     = n;
-    progressBar.style.width = `${(n / TOTAL_STEPS) * 100}%`;
-    stepIndicator.textContent = `Step ${n} of ${TOTAL_STEPS}`;
-    wizardTitle.textContent   = STEP_TITLES[n - 1];
-    btnBack.style.visibility  = n > 1 ? 'visible' : 'hidden';
-    btnNext.textContent       = n === TOTAL_STEPS ? 'Book My Session' : 'Continue';
-    if (n === 1) setNextEnabled(!!wizardData.type);
-    if (n === 2) setNextEnabled(!!wizardData.timeline);
-    if (n === 3) setNextEnabled(wizardData.ratesOk);
-    if (n === 4) { renderCalendar(); setNextEnabled(false); }
-  }
-
-  document.querySelectorAll('#wizard-step-1 .select-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#wizard-step-1 .select-chip').forEach(c => c.classList.remove('selected'));
-      chip.classList.add('selected');
-      wizardData.type = chip.dataset.value;
-      setNextEnabled(true);
-    });
-  });
-  document.querySelectorAll('#wizard-step-2 .select-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#wizard-step-2 .select-chip').forEach(c => c.classList.remove('selected'));
-      chip.classList.add('selected');
-      wizardData.timeline = chip.dataset.value;
-      setNextEnabled(true);
-    });
-  });
-  document.getElementById('accept-rates')?.addEventListener('change', e => {
-    wizardData.ratesOk = e.target.checked;
-    setNextEnabled(e.target.checked);
-  });
-
-  btnNext.addEventListener('click', () => {
-    if (currentWizardStep < TOTAL_STEPS) {
-      goToWizardStep(currentWizardStep + 1);
-    } else {
-      document.getElementById('wizard-card').style.display = 'none';
-      document.getElementById('wizard-success-card').classList.add('visible');
-    }
-  });
-  btnBack.addEventListener('click', () => {
-    if (currentWizardStep > 1) goToWizardStep(currentWizardStep - 1);
-  });
-
-  function resetWizard() {
-    wizardData.type = null; wizardData.timeline = null; wizardData.ratesOk = false;
-    selDay = null; selTime = null;
-    document.getElementById('client-email').value = '';
-    document.getElementById('accept-rates').checked = false;
-    document.querySelectorAll('.select-chip').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.time-slot').forEach(c => c.classList.remove('selected'));
-    goToWizardStep(1);
   }
 
 }); // end DOMContentLoaded

@@ -308,7 +308,7 @@
     generateFallbackSketch();
     isProcessed = true;
   };
-  profileImg.src = 'src/profile.jpg';
+  profileImg.src = 'src/profile.png';
   
   if (profileImg.complete) {
     processProfileImage();

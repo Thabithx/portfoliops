@@ -1,8 +1,6 @@
 const CACHE_NAME = 'portfolio-v8';
 
 const HEAVY_ASSETS = [
-  './src/Cloud Heaven Copyrights Free Video.webm',
-  './src/Cloud Heaven Copyrights Free Video.mp4',
   './src/floating_minecraft_island_medieval.glb',
   './src/hollow_knight.glb',
   './src/hammer.glb',
